@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", async function() {
-    const TeamSelection = document.getElementById("TeamSelection");
     const outputDiv = document.getElementById("output");
     const downloadBtn = document.getElementById("downloadBtn");
 	const teamURL = 'https://www.balldontlie.io/api/v1/teams';
@@ -61,38 +60,47 @@ document.addEventListener("DOMContentLoaded", async function() {
     }
 	
 	
-	function populateDropdown() {
-    fetch(https://9acy441201.execute-api.us-east-2.amazonaws.com/test)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        // Clear the current options (for when the data is loaded)
-        dropdown.innerHTML = '';
+		// Function to fetch data and populate the dropdown
+	function getTeamsDropdown(apiUrl) {
+    // Fetch data from the API
+    fetch(apiUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Get the dropdown element by its ID
+            const dropdown = document.getElementById('document.getElementById("TeamSelection");');
 
-        // Optionally, add a default option
-        const defaultOption = document.createElement('option');
-        defaultOption.value = '';
-        defaultOption.textContent = 'Select an option';
-        dropdown.appendChild(defaultOption);
+            // Clear the initial "Loading..." option
+            dropdown.innerHTML = '';
 
-        // Loop through the API data and add it as options
-        data.forEach(item => {
-          const option = document.createElement('option');
-          option.value = item.id;  // Assuming the API response has an 'id' for each item
-          option.textContent = item.name;  // Assuming the API response has a 'name' for each item
-          dropdown.appendChild(option);
+            // Iterate through the API response data (array of options)
+            data.forEach(item => {
+                // Each item is an array like ["team_name", "Team Name"]
+                const teamName = item[1]; // The team name is the second item in the array
+
+                // Create a new <option> element for each team name
+                const optionElement = document.createElement('option');
+                optionElement.value = teamName; // The value of the option
+                optionElement.textContent = teamName; // The text displayed in the dropdown
+
+                // Append the option to the dropdown
+                dropdown.appendChild(optionElement);
+            });
+        })
+        .catch(error => {
+            console.error('There was an error with the fetch operation:', error);
+
+            // Handle error by adding an error message to the dropdown
+            const dropdown = document.getElementById('dropdown');
+            dropdown.innerHTML = '<option value="">Failed to load options</option>';
         });
-      })
-      .catch(error => {
-        console.error('There was an error fetching the data:', error);
-        dropdown.innerHTML = '<option value="">Failed to load options</option>';
-      });
-  }
+	}
 
-  // Call the function to populate the dropdown
-  populateDropdown();
+	// Call the function to populate the dropdown
+	getTeamsDropdown('https://9acy441201.execute-api.us-east-2.amazonaws.com/test');
+
 });
