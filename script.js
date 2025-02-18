@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", async function() {
     const outputDiv = document.getElementById("output");
     const downloadBtn = document.getElementById("downloadBtn");
-	const teamURL = 'https://www.balldontlie.io/api/v1/teams';
+	const teamURL = 'https://9acy441201.execute-api.us-east-2.amazonaws.com/test';
 
     const selectMenu = document.getElementById("TeamSelection");
     selectMenu.innerHTML = "<option>Loading options...</option>";
