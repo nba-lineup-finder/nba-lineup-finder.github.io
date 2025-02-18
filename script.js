@@ -8,10 +8,11 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     try {
         const response = await fetch(teamURL);
-        const options = await response.json();
+		const responseData = await response.json();
+		const options = JSON.parse(responseData.body);
 
         selectMenu.innerHTML = ""; // Clear previous options
-       options.forEach(team => {
+        options.forEach(team => {
             const teamName = team[1]; // team[1] is the team name in the array
             const newOption = document.createElement("option");
             newOption.value = teamName;  // Use the team name for the value
