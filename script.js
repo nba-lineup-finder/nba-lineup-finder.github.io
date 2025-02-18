@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         const options = await response.json();
 
         selectMenu.innerHTML = ""; // Clear previous options
-        teams.forEach(team => {
+       options.forEach(team => {
             const teamName = team[1]; // team[1] is the team name in the array
             const newOption = document.createElement("option");
             newOption.value = teamName;  // Use the team name for the value
