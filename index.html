@@ -9,27 +9,28 @@
 <body>
     <div class="container">
         <h1>NBA Lineup Finder</h1>
+
         <label for="TeamSelection">Select team:</label>
         <select id="TeamSelection" disabled>
             <option>Loading options...</option>
         </select>
+
         <div id="output"></div>
-        <div id="output"></div>
-		
-		<<div class="selection-container">
+
+        <div class="selection-container">
             <div class="selection-box">
                 <h3>Include Players (Max 5)</h3>
                 <select id="includeSelection" multiple size="6" disabled></select>
             </div>
             <div class="selection-box">
-                <h3>Exclude Players (Max 5)</h3>
+                <h3>Exclude Players (No Limit)</h3>
                 <select id="excludeSelection" multiple size="6" disabled></select>
             </div>
         </div>
-		
+
         <button id="downloadBtn" style="display:none;">Download Data</button>
     </div>
-    
+
     <script src="script.js"></script>
 </body>
 </html>
