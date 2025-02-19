@@ -13,6 +13,16 @@ body {
     box-shadow: 2px 2px 12px rgba(0,0,0,0.1);
 }
 
+.selection-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.selection-box {
+    width: 45%;
+}
+
 input, button {
     margin-top: 10px;
     padding: 8px;
