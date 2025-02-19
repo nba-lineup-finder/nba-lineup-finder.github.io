@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         excludeSelection.disabled = false;
     }
 
-    function updateSelections(source, target) {
+    function updateSelections(source, target, limit) {
         const selectedItems = Array.from(source.selectedOptions).map(opt => opt.value);
         const targetOptions = Array.from(target.options);
 
@@ -93,19 +93,19 @@ document.addEventListener("DOMContentLoaded", async function () {
             opt.disabled = selectedItems.includes(opt.value);
         });
 
-        // Limit selection to 5
-        if (selectedItems.length > 5) {
-            alert("You can only select up to 5 players.");
+        // Limit selection if necessary
+        if (limit && selectedItems.length > limit) {
+            alert(`You can only select up to ${limit} players.`);
             source.selectedIndex = -1; // Reset selection
         }
     }
 
     includeSelection.addEventListener("change", function () {
-        updateSelections(includeSelection, excludeSelection);
+        updateSelections(includeSelection, excludeSelection, 5); // Limit to 5 for include
     });
 
     excludeSelection.addEventListener("change", function () {
-        updateSelections(excludeSelection, includeSelection);
+        updateSelections(excludeSelection, includeSelection, null); // No limit for exclude
     });
 
     function downloadData(data) {
