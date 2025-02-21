@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             const response = await fetch(teamPlayersURL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                queryStringParameters: JSON.stringify({ team: teamName }) // Sending team name as parameter
+                queryStringParameters: JSON.stringify({ 'team': teamName }) // Sending team name as parameter
             });
 
             const data = await response.json();
