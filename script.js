@@ -1,11 +1,28 @@
 document.addEventListener("DOMContentLoaded", async function () {
     const outputDiv = document.getElementById("output");
-    const downloadBtn = document.getElementById("downloadBtn");
     const teamURL = 'https://9acy441201.execute-api.us-east-2.amazonaws.com/test';
     const teamPlayersURL = 'https://ty0t9wa9fk.execute-api.us-east-2.amazonaws.com/test';
     const selectMenu = document.getElementById("TeamSelection");
     const includeSelection = document.getElementById("includeSelection");
     const excludeSelection = document.getElementById("excludeSelection");
+
+    // Ensure the selected player containers exist
+    let selectedPlayersContainer = document.getElementById("selectedPlayersContainer");
+    if (!selectedPlayersContainer) {
+        selectedPlayersContainer = document.createElement("div");
+        selectedPlayersContainer.id = "selectedPlayersContainer";
+        selectedPlayersContainer.innerHTML = `
+            <div class="selected-group">
+                <h3>Included Players</h3>
+                <div id="selectedIncluded" class="selected-list"></div>
+            </div>
+            <div class="selected-group">
+                <h3>Excluded Players</h3>
+                <div id="selectedExcluded" class="selected-list"></div>
+            </div>
+        `;
+        outputDiv.appendChild(selectedPlayersContainer);
+    }
 
     const selectedIncludedDiv = document.getElementById("selectedIncluded");
     const selectedExcludedDiv = document.getElementById("selectedExcluded");
