@@ -6,9 +6,23 @@ document.addEventListener("DOMContentLoaded", async function () {
     const selectMenu = document.getElementById("TeamSelection");
     const includeSelection = document.getElementById("includeSelection");
     const excludeSelection = document.getElementById("excludeSelection");
-    const selectedPlayersDiv = document.createElement("div");
-    selectedPlayersDiv.id = "selectedPlayers";
-    outputDiv.appendChild(selectedPlayersDiv);
+
+    const selectedPlayersContainer = document.createElement("div");
+    selectedPlayersContainer.id = "selectedPlayersContainer";
+    selectedPlayersContainer.innerHTML = `
+        <div class="selected-group">
+            <h3>Included Players</h3>
+            <div id="selectedIncluded" class="selected-list"></div>
+        </div>
+        <div class="selected-group">
+            <h3>Excluded Players</h3>
+            <div id="selectedExcluded" class="selected-list"></div>
+        </div>
+    `;
+    outputDiv.appendChild(selectedPlayersContainer);
+
+    const selectedIncludedDiv = document.getElementById("selectedIncluded");
+    const selectedExcludedDiv = document.getElementById("selectedExcluded");
 
     selectMenu.innerHTML = "<option>Loading options...</option>";
 
@@ -17,7 +31,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         const responseData = await response.json();
         const options = JSON.parse(responseData.body);
 
-        selectMenu.innerHTML = ""; 
+        selectMenu.innerHTML = "";
         options.forEach(team => {
             const teamName = team[1];
             const newOption = document.createElement("option");
@@ -53,7 +67,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             if (players.players && Array.isArray(players.players)) {
                 populatePlayerOptions(players.players);
-                selectedPlayersDiv.innerHTML = ""; 
+                selectedIncludedDiv.innerHTML = "";
+                selectedExcludedDiv.innerHTML = "";
             } else {
                 outputDiv.innerHTML = `<p style="color: red;">No players found for ${teamName}</p>`;
             }
@@ -72,12 +87,12 @@ document.addEventListener("DOMContentLoaded", async function () {
             let option1 = document.createElement("option");
             option1.value = player;
             option1.textContent = player;
-            option1.addEventListener("click", () => moveToSelected(player));
+            option1.addEventListener("click", () => moveToSelected(player, "include"));
 
             let option2 = document.createElement("option");
             option2.value = player;
             option2.textContent = player;
-            option2.addEventListener("click", () => moveToSelected(player));
+            option2.addEventListener("click", () => moveToSelected(player, "exclude"));
 
             includeSelection.appendChild(option1);
             excludeSelection.appendChild(option2);
@@ -94,17 +109,21 @@ document.addEventListener("DOMContentLoaded", async function () {
         selectElement.size = Math.max(6, selectElement.options.length);
     }
 
-    function moveToSelected(player) {
-        if (document.getElementById(`selected-${player}`)) return; 
+    function moveToSelected(player, category) {
+        if (document.getElementById(`selected-${player}`)) return;
 
-        const selectedPlayerDiv = document.createElement("div");
-        selectedPlayerDiv.className = "selected-player";
-        selectedPlayerDiv.id = `selected-${player}`;
-        selectedPlayerDiv.innerHTML = `
-            ${player} <button class="remove-player" onclick="restorePlayer('${player}')">X</button>
+        const selectedDiv = document.createElement("div");
+        selectedDiv.className = "selected-player";
+        selectedDiv.id = `selected-${player}`;
+        selectedDiv.innerHTML = `
+            ${player} <button class="remove-player" onclick="restorePlayer('${player}', '${category}')">✖</button>
         `;
 
-        selectedPlayersDiv.appendChild(selectedPlayerDiv);
+        if (category === "include") {
+            selectedIncludedDiv.appendChild(selectedDiv);
+        } else {
+            selectedExcludedDiv.appendChild(selectedDiv);
+        }
 
         removeFromSelections(player);
     }
@@ -119,7 +138,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
     }
 
-    window.restorePlayer = function (player) {
+    window.restorePlayer = function (player, category) {
         const playerDiv = document.getElementById(`selected-${player}`);
         if (playerDiv) {
             playerDiv.remove();
@@ -131,12 +150,12 @@ document.addEventListener("DOMContentLoaded", async function () {
         let option1 = document.createElement("option");
         option1.value = player;
         option1.textContent = player;
-        option1.addEventListener("click", () => moveToSelected(player));
+        option1.addEventListener("click", () => moveToSelected(player, "include"));
 
         let option2 = document.createElement("option");
         option2.value = player;
         option2.textContent = player;
-        option2.addEventListener("click", () => moveToSelected(player));
+        option2.addEventListener("click", () => moveToSelected(player, "exclude"));
 
         includeSelection.appendChild(option1);
         excludeSelection.appendChild(option2);

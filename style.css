@@ -59,3 +59,37 @@ button:hover {
         width: 48%; /* Keeps spacing even */
     }
 }
+
+.selected-group {
+    display: inline-block;
+    width: 48%;
+    vertical-align: top;
+}
+
+.selected-list {
+    border: 1px solid #ccc;
+    min-height: 100px;
+    padding: 10px;
+    background: #f9f9f9;
+}
+
+.selected-player {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #ddd;
+    padding: 5px 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+}
+
+.remove-player {
+    background: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 2px 5px;
+    margin-left: 10px;
+    border-radius: 50%;
+}
