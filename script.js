@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const outputDiv = document.getElementById("output");
     const downloadBtn = document.getElementById("downloadBtn");
     const teamURL = 'https://9acy441201.execute-api.us-east-2.amazonaws.com/test';
-    const teamPlayersURL = 'https://f6gkdr23v2.execute-api.us-east-2.amazonaws.com/test'; // Replace with your Lambda API URL
+    const teamPlayersURL = 'https://ty0t9wa9fk.execute-api.us-east-2.amazonaws.com/test;
     const selectMenu = document.getElementById("TeamSelection");
     const includeSelection = document.getElementById("includeSelection");
     const excludeSelection = document.getElementById("excludeSelection");
