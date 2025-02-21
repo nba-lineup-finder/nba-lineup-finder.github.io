@@ -7,22 +7,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     const includeSelection = document.getElementById("includeSelection");
     const excludeSelection = document.getElementById("excludeSelection");
 
-    const selectedPlayersContainer = document.createElement("div");
-    selectedPlayersContainer.id = "selectedPlayersContainer";
-    selectedPlayersContainer.innerHTML = `
-        <div class="selected-group">
-            <h3>Included Players</h3>
-            <div id="selectedIncluded" class="selected-list"></div>
-        </div>
-        <div class="selected-group">
-            <h3>Excluded Players</h3>
-            <div id="selectedExcluded" class="selected-list"></div>
-        </div>
-    `;
-    outputDiv.appendChild(selectedPlayersContainer);
-
     const selectedIncludedDiv = document.getElementById("selectedIncluded");
     const selectedExcludedDiv = document.getElementById("selectedExcluded");
+
+    let includedPlayers = new Set();
 
     selectMenu.innerHTML = "<option>Loading options...</option>";
 
@@ -69,6 +57,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 populatePlayerOptions(players.players);
                 selectedIncludedDiv.innerHTML = "";
                 selectedExcludedDiv.innerHTML = "";
+                includedPlayers.clear();
             } else {
                 outputDiv.innerHTML = `<p style="color: red;">No players found for ${teamName}</p>`;
             }
@@ -110,17 +99,23 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     function moveToSelected(player, category) {
-        if (document.getElementById(`selected-${player}`)) return;
+        if (document.getElementById(`selected-${CSS.escape(player)}`)) return;
+
+        if (category === "include" && includedPlayers.size >= 5) {
+            alert("You can only include up to 5 players.");
+            return;
+        }
 
         const selectedDiv = document.createElement("div");
         selectedDiv.className = "selected-player";
-        selectedDiv.id = `selected-${player}`;
+        selectedDiv.id = `selected-${CSS.escape(player)}`;
         selectedDiv.innerHTML = `
-            ${player} <button class="remove-player" onclick="restorePlayer('${player}', '${category}')">✖</button>
+            ${player} <button class="remove-player" onclick="restorePlayer('${player.replace(/'/g, "\\'")}', '${category}')">✖</button>
         `;
 
         if (category === "include") {
             selectedIncludedDiv.appendChild(selectedDiv);
+            includedPlayers.add(player);
         } else {
             selectedExcludedDiv.appendChild(selectedDiv);
         }
@@ -139,9 +134,12 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     window.restorePlayer = function (player, category) {
-        const playerDiv = document.getElementById(`selected-${player}`);
+        const playerDiv = document.getElementById(`selected-${CSS.escape(player)}`);
         if (playerDiv) {
             playerDiv.remove();
+            if (category === "include") {
+                includedPlayers.delete(player);
+            }
             addBackToSelections(player);
         }
     };
