@@ -40,30 +40,28 @@ document.addEventListener("DOMContentLoaded", async function () {
         fetchPlayerData(selectMenu.value);
     });
 
-	
-	async function fetchPlayerData(teamName) {
-    outputDiv.innerHTML = "Fetching players...";
-    try {
-        const response = await fetch(`${teamPlayersURL}?team=${encodeURIComponent(teamName)}`, {
-            method: "GET",
-            headers: { "Content-Type": "application/json" }
-        });
+    async function fetchPlayerData(teamName) {
+        outputDiv.innerHTML = "Fetching players...";
+        try {
+            const response = await fetch(`${teamPlayersURL}?team=${encodeURIComponent(teamName)}`, {
+                method: "GET",
+                headers: { "Content-Type": "application/json" }
+            });
 
-        const data = await response.json();
-		const players = JSON.parse(data.body);
-        
-        if (players.players && Array.isArray(players.players)) {
-            populatePlayerOptions(players.players);
-            outputDiv.innerHTML = `<p>Players loaded for ${teamName}</p>`;
-        } else {
-            outputDiv.innerHTML = `<p style="color: red;">No players found for ${teamName}</p>`;
+            const data = await response.json();
+            const players = JSON.parse(data.body);
+
+            if (players.players && Array.isArray(players.players)) {
+                populatePlayerOptions(players.players);
+            } else {
+                outputDiv.innerHTML = `<p style="color: red;">No players found for ${teamName}</p>`;
+            }
+
+        } catch (error) {
+            outputDiv.innerHTML = `<p style="color: red;">Error fetching player data</p>`;
+            console.error("Error fetching player data:", error);
         }
-
-    } catch (error) {
-        outputDiv.innerHTML = `<p style="color: red;">Error fetching player data</p>`;
-        console.error("Error fetching player data:", error);
-		}
-	}
+    }
 
     function populatePlayerOptions(players) {
         includeSelection.innerHTML = "";
@@ -81,8 +79,15 @@ document.addEventListener("DOMContentLoaded", async function () {
             excludeSelection.appendChild(option2);
         });
 
+        adjustSize(includeSelection);
+        adjustSize(excludeSelection);
+
         includeSelection.disabled = false;
         excludeSelection.disabled = false;
+    }
+
+    function adjustSize(selectElement) {
+        selectElement.size = Math.max(6, selectElement.options.length);
     }
 
     function updateSelections(source, target, limit) {
