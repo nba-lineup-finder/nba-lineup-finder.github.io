@@ -6,6 +6,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     const selectMenu = document.getElementById("TeamSelection");
     const includeSelection = document.getElementById("includeSelection");
     const excludeSelection = document.getElementById("excludeSelection");
+    const selectedPlayersDiv = document.createElement("div");
+    selectedPlayersDiv.id = "selectedPlayers";
+    outputDiv.appendChild(selectedPlayersDiv);
 
     selectMenu.innerHTML = "<option>Loading options...</option>";
 
@@ -14,9 +17,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         const responseData = await response.json();
         const options = JSON.parse(responseData.body);
 
-        selectMenu.innerHTML = ""; // Clear previous options
+        selectMenu.innerHTML = ""; 
         options.forEach(team => {
-            const teamName = team[1]; // Assuming team[1] contains the team name
+            const teamName = team[1];
             const newOption = document.createElement("option");
             newOption.value = teamName;
             newOption.textContent = teamName;
@@ -25,7 +28,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         selectMenu.disabled = false;
 
-        // Fetch player list for the first available team
         if (selectMenu.value) {
             fetchPlayerData(selectMenu.value);
         }
@@ -35,7 +37,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         console.error("Error fetching dropdown options:", error);
     }
 
-    // Listen for team selection changes and fetch players
     selectMenu.addEventListener("change", function () {
         fetchPlayerData(selectMenu.value);
     });
@@ -52,6 +53,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             if (players.players && Array.isArray(players.players)) {
                 populatePlayerOptions(players.players);
+                selectedPlayersDiv.innerHTML = ""; 
             } else {
                 outputDiv.innerHTML = `<p style="color: red;">No players found for ${teamName}</p>`;
             }
@@ -70,11 +72,14 @@ document.addEventListener("DOMContentLoaded", async function () {
             let option1 = document.createElement("option");
             option1.value = player;
             option1.textContent = player;
-            includeSelection.appendChild(option1);
+            option1.addEventListener("click", () => moveToSelected(player));
 
             let option2 = document.createElement("option");
             option2.value = player;
             option2.textContent = player;
+            option2.addEventListener("click", () => moveToSelected(player));
+
+            includeSelection.appendChild(option1);
             excludeSelection.appendChild(option2);
         });
 
@@ -89,35 +94,54 @@ document.addEventListener("DOMContentLoaded", async function () {
         selectElement.size = Math.max(6, selectElement.options.length);
     }
 
-    function updateSelections(source, target, limit) {
-        const selectedItems = Array.from(source.selectedOptions).map(opt => opt.value);
-        const targetOptions = Array.from(target.options);
+    function moveToSelected(player) {
+        if (document.getElementById(`selected-${player}`)) return; 
 
-        // Disable selected items in the opposite list
-        targetOptions.forEach(opt => {
-            opt.disabled = selectedItems.includes(opt.value);
-        });
+        const selectedPlayerDiv = document.createElement("div");
+        selectedPlayerDiv.className = "selected-player";
+        selectedPlayerDiv.id = `selected-${player}`;
+        selectedPlayerDiv.innerHTML = `
+            ${player} <button class="remove-player" onclick="restorePlayer('${player}')">X</button>
+        `;
 
-        // Limit selection if necessary
-        if (limit && selectedItems.length > limit) {
-            alert(`You can only select up to ${limit} players.`);
-            source.selectedIndex = -1; // Reset selection
-        }
+        selectedPlayersDiv.appendChild(selectedPlayerDiv);
+
+        removeFromSelections(player);
     }
 
-    includeSelection.addEventListener("change", function () {
-        updateSelections(includeSelection, excludeSelection, 5); // Limit to 5 for include
-    });
+    function removeFromSelections(player) {
+        [includeSelection, excludeSelection].forEach(select => {
+            [...select.options].forEach(option => {
+                if (option.value === player) {
+                    option.remove();
+                }
+            });
+        });
+    }
 
-    excludeSelection.addEventListener("change", function () {
-        updateSelections(excludeSelection, includeSelection, null); // No limit for exclude
-    });
+    window.restorePlayer = function (player) {
+        const playerDiv = document.getElementById(`selected-${player}`);
+        if (playerDiv) {
+            playerDiv.remove();
+            addBackToSelections(player);
+        }
+    };
 
-    function downloadData(data) {
-        const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = "data.json";
-        link.click();
+    function addBackToSelections(player) {
+        let option1 = document.createElement("option");
+        option1.value = player;
+        option1.textContent = player;
+        option1.addEventListener("click", () => moveToSelected(player));
+
+        let option2 = document.createElement("option");
+        option2.value = player;
+        option2.textContent = player;
+        option2.addEventListener("click", () => moveToSelected(player));
+
+        includeSelection.appendChild(option1);
+        excludeSelection.appendChild(option2);
+
+        adjustSize(includeSelection);
+        adjustSize(excludeSelection);
     }
 });
