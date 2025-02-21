@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
 
         const data = await response.json();
-		const players = data.body();
+		const players = JSON.parse(data.body);
         
         if (players.players && Array.isArray(players.players)) {
             populatePlayerOptions(players.players);
