@@ -61,29 +61,39 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     async function fetchPlayerData(teamName) {
-        try {
-            const response = await fetch(`${teamPlayersURL}?team=${encodeURIComponent(teamName)}`, {
-                method: "GET",
-                headers: { "Content-Type": "application/json" }
-            });
+    try {
+        const response = await fetch(`${teamPlayersURL}?team=${encodeURIComponent(teamName)}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" }
+        });
 
-            const data = await response.json();
-            const players = JSON.parse(data.body);
-
-            if (players.players && Array.isArray(players.players)) {
-                populatePlayerOptions(players.players);
-                selectedIncludedDiv.innerHTML = "";
-                selectedExcludedDiv.innerHTML = "";
-                includedPlayers.clear();
-            } else {
-                outputDiv.innerHTML = `<p style="color: red;">No players found for ${teamName}</p>`;
-            }
-
-        } catch (error) {
-            outputDiv.innerHTML = `<p style="color: red;">Error fetching player data</p>`;
-            console.error("Error fetching player data:", error);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
+
+        const data = await response.json();
+        
+        if (!data.body) {
+            throw new Error("Invalid response: No 'body' field in JSON");
+        }
+
+        const players = JSON.parse(data.body);
+
+        if (!players.players || !Array.isArray(players.players)) {
+            throw new Error("Invalid data format: 'players' key missing or not an array");
+        }
+
+        populatePlayerOptions(players.players);
+        selectedIncludedDiv.innerHTML = "";
+        selectedExcludedDiv.innerHTML = "";
+        includedPlayers.clear();
+
+    } catch (error) {
+        outputDiv.innerHTML = `<p style="color: red;">Error fetching player data</p>`;
+        console.error("Error fetching player data:", error);
     }
+}
+
 
     function populatePlayerOptions(players) {
         includeSelection.innerHTML = "";
