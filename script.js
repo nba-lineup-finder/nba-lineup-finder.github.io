@@ -45,14 +45,15 @@ document.addEventListener("DOMContentLoaded", async function () {
     outputDiv.innerHTML = "Fetching players...";
     try {
         const response = await fetch(`${teamPlayersURL}?team=${encodeURIComponent(teamName)}`, {
-            method: "GET", // Change to GET since it's a query parameter
+            method: "GET",
             headers: { "Content-Type": "application/json" }
         });
 
         const data = await response.json();
+		const players = data.body();
         
-        if (data.players && Array.isArray(data.players)) {
-            populatePlayerOptions(data.players);
+        if (players.players && Array.isArray(players.players)) {
+            populatePlayerOptions(players.players);
             outputDiv.innerHTML = `<p>Players loaded for ${teamName}</p>`;
         } else {
             outputDiv.innerHTML = `<p style="color: red;">No players found for ${teamName}</p>`;
