@@ -41,7 +41,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     async function fetchPlayerData(teamName) {
-        outputDiv.innerHTML = "Fetching players...";
         try {
             const response = await fetch(`${teamPlayersURL}?team=${encodeURIComponent(teamName)}`, {
                 method: "GET",
