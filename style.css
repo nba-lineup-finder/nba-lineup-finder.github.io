@@ -31,8 +31,8 @@ select {
 button {
     width: 100%;
     padding: 10px;
-    font-size: 12px;
-    margin-top: 5px;
+    font-size: 16px;
+    margin-top: 10px;
     border: none;
     border-radius: 5px;
     background-color: #007bff;
