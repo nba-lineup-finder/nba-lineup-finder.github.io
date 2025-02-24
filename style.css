@@ -51,7 +51,7 @@ button:hover {
 
 /* Minimum Minutes Input */
 #minMinutes {
-    width: 3.5em; /* Approx 5 characters wide */
+    width: 5em; 
     text-align: center;
     padding: 5px;
     font-size: 14px;

@@ -2,11 +2,12 @@ document.addEventListener("DOMContentLoaded", async function () {
     const outputDiv = document.getElementById("output");
     const teamURL = 'https://9acy441201.execute-api.us-east-2.amazonaws.com/test';
     const teamPlayersURL = 'https://ty0t9wa9fk.execute-api.us-east-2.amazonaws.com/test';
+    const findLineupsURL = 'https://your-api-endpoint.com/find-lineups'; // <-- Replace with actual API
     const selectMenu = document.getElementById("TeamSelection");
     const includeSelection = document.getElementById("includeSelection");
     const excludeSelection = document.getElementById("excludeSelection");
 
-    // Ensure the selected player containers exist
+    // Ensure selected players container exists
     let selectedPlayersContainer = document.getElementById("selectedPlayersContainer");
     if (!selectedPlayersContainer) {
         selectedPlayersContainer = document.createElement("div");
@@ -21,7 +22,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <div id="selectedExcluded" class="selected-list"></div>
             </div>
             <label for="minMinutes" id="minMinutesLabel" style="display: none;">Minimum minutes:</label>
-            <input type="number" id="minMinutes" min="0" value="0" style="display: none;">
+            <input type="number" id="minMinutes" min="0" value="0" style="display: none; width: 3.5em; text-align: center;">
+            <button id="findLineupsBtn" style="display: none; margin-left: 10px;">Find Lineups</button>
         `;
         outputDiv.appendChild(selectedPlayersContainer);
     }
@@ -30,8 +32,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     const selectedExcludedDiv = document.getElementById("selectedExcluded");
     const minMinutesInput = document.getElementById("minMinutes");
     const minMinutesLabel = document.getElementById("minMinutesLabel");
+    const findLineupsBtn = document.getElementById("findLineupsBtn");
 
     let includedPlayers = new Set();
+    let excludedPlayers = new Set();
 
     selectMenu.innerHTML = "<option>Loading options...</option>";
 
@@ -91,6 +95,11 @@ document.addEventListener("DOMContentLoaded", async function () {
             selectedIncludedDiv.innerHTML = "";
             selectedExcludedDiv.innerHTML = "";
             includedPlayers.clear();
+            excludedPlayers.clear();
+
+            minMinutesInput.style.display = "inline-block";
+            minMinutesLabel.style.display = "inline-block";
+            findLineupsBtn.style.display = "inline-block";
 
         } catch (error) {
             outputDiv.innerHTML = `<p style="color: red;">Error fetching player data</p>`;
@@ -117,21 +126,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             excludeSelection.appendChild(option2);
         });
 
-        adjustSize(includeSelection);
-        adjustSize(excludeSelection);
-
         includeSelection.disabled = false;
         excludeSelection.disabled = false;
-
-        // Show "Minimum minutes" input field when players are available
-        if (players.length > 0) {
-            minMinutesInput.style.display = "inline";
-            minMinutesLabel.style.display = "inline";
-        }
-    }
-
-    function adjustSize(selectElement) {
-        selectElement.size = Math.max(6, selectElement.options.length);
     }
 
     function moveToSelected(player, category) {
@@ -154,6 +150,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             includedPlayers.add(player);
         } else {
             selectedExcludedDiv.appendChild(selectedDiv);
+            excludedPlayers.add(player);
         }
 
         removeFromSelections(player);
@@ -175,6 +172,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             playerDiv.remove();
             if (category === "include") {
                 includedPlayers.delete(player);
+            } else {
+                excludedPlayers.delete(player);
             }
             addBackToSelections(player);
         }
@@ -193,15 +192,32 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         includeSelection.appendChild(option1);
         excludeSelection.appendChild(option2);
-
-        adjustSize(includeSelection);
-        adjustSize(excludeSelection);
     }
 
-    // Ensure only integers are allowed in the input field
-    minMinutesInput.addEventListener("input", function () {
-        this.value = this.value.replace(/\D/g, ""); // Remove non-numeric characters
-        if (this.value === "") this.value = 0; // Default to 0 if empty
-    });
+    findLineupsBtn.addEventListener("click", async function () {
+        if (includedPlayers.size === 0 && excludedPlayers.size === 0) {
+            alert("You must include at least one included or excluded player.");
+            return;
+        }
 
+        const requestData = {
+            team: selectMenu.value,
+            included_players: Array.from(includedPlayers),
+            excluded_players: Array.from(excludedPlayers),
+            min_minutes: parseInt(minMinutesInput.value, 10) || 0
+        };
+
+        try {
+            const response = await fetch(findLineupsURL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(requestData)
+            });
+
+            const result = await response.json();
+            console.log("Lineup Data:", result);
+        } catch (error) {
+            console.error("Error fetching lineup data:", error);
+        }
+    });
 });
