@@ -22,6 +22,19 @@ body {
     margin-top: 15px;
 }
 
+@media (min-width: 600px) {
+    .selection-container {
+        flex-direction: row; /* Side by side on larger screens */
+        justify-content: space-between;
+        gap: 20px; /* Adjust spacing between boxes */
+    }
+}
+
+.selection-box {
+    flex: 1;
+    min-width: 0;
+}
+
 /* Styling for the selection dropdowns */
 select {
     width: 100%;
@@ -64,14 +77,6 @@ button:hover {
 #minMinutesLabel {
     font-weight: bold;
     margin-top: 10px;
-}
-
-/* Responsive Design */
-@media (min-width: 600px) {
-    .selection-container {
-        flex-direction: row; /* Side by side on larger screens */
-        justify-content: space-between;
-    }
 }
 
 /* Style for selected players */
