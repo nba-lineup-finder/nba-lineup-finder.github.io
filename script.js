@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     const selectMenu = document.getElementById("TeamSelection");
     const includeSelection = document.getElementById("includeSelection");
     const excludeSelection = document.getElementById("excludeSelection");
+	const infoIcon = document.getElementById("infoIcon");
+
 
     // Ensure selected players container exists
     let selectedPlayersContainer = document.getElementById("selectedPlayersContainer");
@@ -58,7 +60,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (selectMenu.value) {
             fetchPlayerData(selectMenu.value);
         }
-
     } catch (error) {
         selectMenu.innerHTML = "<option>Error loading options</option>";
         console.error("Error fetching dropdown options:", error);
@@ -68,6 +69,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         fetchPlayerData(selectMenu.value);
     });
 
+	if (infoIcon) {
+		infoIcon.classList.add("tooltip");
+		infoIcon.innerHTML += '<span class="tooltip-text">Searches for 5 man lineups that have played more or equal to the minimum minutes selected</span>';
+	}
+	
     async function fetchPlayerData(teamName) {
         try {
             const response = await fetch(`${teamPlayersURL}?team=${encodeURIComponent(teamName)}`, {
