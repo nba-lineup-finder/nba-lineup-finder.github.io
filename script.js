@@ -108,26 +108,33 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     function populatePlayerOptions(players) {
-        includeSelection.innerHTML = "";
-        excludeSelection.innerHTML = "";
+		includeSelection.innerHTML = "";
+		excludeSelection.innerHTML = "";
 
-        players.forEach(player => {
-            let option1 = document.createElement("option");
-            option1.value = player;
-            option1.textContent = player;
-            option1.addEventListener("click", () => moveToSelected(player, "include"));
+		// Dynamically set size to match the number of players, ensuring at least 6 rows are visible
+		let selectionSize = Math.max(players.length, 6);
+		includeSelection.size = selectionSize;
+		excludeSelection.size = selectionSize;
 
-            let option2 = document.createElement("option");
-            option2.value = player;
-            option2.textContent = player;
-            option2.addEventListener("click", () => moveToSelected(player, "exclude"));
+		players.forEach(player => {
+			let option1 = document.createElement("option");
+			option1.value = player;
+			option1.textContent = player;
+			option1.addEventListener("click", () => moveToSelected(player, "include"));
 
-            includeSelection.appendChild(option1);
-            excludeSelection.appendChild(option2);
-        });
+			let option2 = document.createElement("option");
+			option2.value = player;
+			option2.textContent = player;
+			option2.addEventListener("click", () => moveToSelected(player, "exclude"));
 
-        includeSelection.disabled = false;
-        excludeSelection.disabled = false;
+			includeSelection.appendChild(option1);
+			excludeSelection.appendChild(option2);
+			});
+
+		includeSelection.disabled = false;
+		excludeSelection.disabled = false;
+	}
+
     }
 
     function moveToSelected(player, category) {
