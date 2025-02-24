@@ -113,3 +113,32 @@ button:hover {
 .remove-player:hover {
     background: darkred;
 }
+
+.selection-box {
+    display: inline-block;
+    vertical-align: top;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    min-width: 200px;
+}
+
+.selection-box select {
+    width: 100%;
+    border: 1px solid #ccc;
+    padding: 5px;
+    box-sizing: border-box;
+    min-height: auto;
+    height: auto;
+}
+
+/* Dynamically adjust height based on options */
+.selection-box select[size] {
+    height: auto;
+    min-height: 150px; /* Set a reasonable minimum height */
+}
+
+.selection-box select option {
+    padding: 5px;
+}
