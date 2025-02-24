@@ -68,44 +68,53 @@ document.addEventListener("DOMContentLoaded", async function () {
         fetchPlayerData(selectMenu.value);
     });
 
-    async function fetchPlayerData(teamName) {
-        try {
-            const response = await fetch(`${teamPlayersURL}?team=${encodeURIComponent(teamName)}`, {
-                method: "GET",
-                headers: { "Content-Type": "application/json" }
-            });
+	async function fetchPlayerData(teamName) {
+		try {
+			// Clear included and excluded players before fetching new data
+			selectedIncludedDiv.innerHTML = "";
+			selectedExcludedDiv.innerHTML = "";
+			includedPlayers.clear();
+			excludedPlayers.clear();
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
+			// Clear previous player selection options
+			includeSelection.innerHTML = "";
+			excludeSelection.innerHTML = "";
 
-            const data = await response.json();
+			const response = await fetch(`${teamPlayersURL}?team=${encodeURIComponent(teamName)}`, {
+				method: "GET",
+				headers: { "Content-Type": "application/json" }
+			});
 
-            if (!data.body) {
-                throw new Error("Invalid response: No 'body' field in JSON");
-            }
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
 
-            const players = JSON.parse(data.body);
+			const data = await response.json();
 
-            if (!players.players || !Array.isArray(players.players)) {
-                throw new Error("Invalid data format: 'players' key missing or not an array");
-            }
+			if (!data.body) {
+				throw new Error("Invalid response: No 'body' field in JSON");
+			}
 
-            populatePlayerOptions(players.players);
-            selectedIncludedDiv.innerHTML = "";
-            selectedExcludedDiv.innerHTML = "";
-            includedPlayers.clear();
-            excludedPlayers.clear();
+			const players = JSON.parse(data.body);
 
-            minMinutesInput.style.display = "inline-block";
-            minMinutesLabel.style.display = "inline-block";
-            findLineupsBtn.style.display = "inline-block";
+			if (!players.players || !Array.isArray(players.players)) {
+				throw new Error("Invalid data format: 'players' key missing or not an array");
+			}
 
-        } catch (error) {
-            outputDiv.innerHTML = `<p style="color: red;">Error fetching player data</p>`;
-            console.error("Error fetching player data:", error);
-        }
-    }
+			// Populate the new players into selection boxes
+			populatePlayerOptions(players.players);
+
+			// Show input fields and button after loading new players
+			minMinutesInput.style.display = "inline-block";
+			minMinutesLabel.style.display = "inline-block";
+			findLineupsBtn.style.display = "inline-block";
+
+		} catch (error) {
+			outputDiv.innerHTML = `<p style="color: red;">Error fetching player data</p>`;
+			console.error("Error fetching player data:", error);
+		}
+	}
+
 
     function populatePlayerOptions(players) {
 		includeSelection.innerHTML = "";
