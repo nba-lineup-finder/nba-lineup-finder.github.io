@@ -7,7 +7,7 @@ body {
 
 .container {
     width: 90%;
-    max-width: 600px;
+    max-width: 600px; /* Prevents it from being too wide on large screens */
     margin: auto;
     padding: 20px;
     border: 1px solid #ddd;
@@ -17,28 +17,21 @@ body {
 
 .selection-container {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px;
+    flex-direction: column; /* Stack the selections on smaller screens */
+    gap: 15px;
     margin-top: 15px;
 }
 
-.selection-box {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
+/* Styling for the selection dropdowns */
 select {
     width: 100%;
-    min-height: 150px;
     padding: 8px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
 
+/* Button Styles */
 button {
     width: 100%;
     padding: 10px;
@@ -56,8 +49,9 @@ button:hover {
     background-color: #0056b3;
 }
 
+/* Minimum Minutes Input */
 #minMinutes {
-    width: 5em;
+    width: 5em; 
     text-align: center;
     padding: 5px;
     font-size: 14px;
@@ -66,23 +60,25 @@ button:hover {
     margin-top: 10px;
 }
 
+/* Ensures labels align properly */
 #minMinutesLabel {
     font-weight: bold;
     margin-top: 10px;
 }
 
+/* Responsive Design */
 @media (min-width: 600px) {
     .selection-container {
-        flex-direction: row;
+        flex-direction: row; /* Side by side on larger screens */
         justify-content: space-between;
     }
 }
 
+/* Style for selected players */
 .selected-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: inline-block;
     width: 48%;
+    vertical-align: top;
 }
 
 .selected-player {
@@ -94,9 +90,9 @@ button:hover {
     margin: 5px 0;
     border-radius: 5px;
     border: 1px solid #ddd;
-    width: 100%;
 }
 
+/* Remove Player Button */
 .remove-player {
     background: red;
     color: white;
@@ -131,11 +127,15 @@ button:hover {
     text-align: center;
     padding: 5px;
     border-radius: 5px;
+    
+    /* Positioning */
     position: absolute;
     z-index: 1;
-    bottom: 125%;
+    bottom: 125%; /* Position above the icon */
     left: 50%;
     transform: translateX(-50%);
+
+    /* Fade-in effect */
     opacity: 0;
     transition: opacity 0.3s;
 }
