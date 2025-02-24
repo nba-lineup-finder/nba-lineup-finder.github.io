@@ -20,12 +20,16 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <h3>Excluded Players</h3>
                 <div id="selectedExcluded" class="selected-list"></div>
             </div>
+            <label for="minMinutes" id="minMinutesLabel" style="display: none;">Minimum minutes:</label>
+            <input type="number" id="minMinutes" min="0" value="0" style="display: none;">
         `;
         outputDiv.appendChild(selectedPlayersContainer);
     }
 
     const selectedIncludedDiv = document.getElementById("selectedIncluded");
     const selectedExcludedDiv = document.getElementById("selectedExcluded");
+    const minMinutesInput = document.getElementById("minMinutes");
+    const minMinutesLabel = document.getElementById("minMinutesLabel");
 
     let includedPlayers = new Set();
 
@@ -61,39 +65,38 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     async function fetchPlayerData(teamName) {
-    try {
-        const response = await fetch(`${teamPlayersURL}?team=${encodeURIComponent(teamName)}`, {
-            method: "GET",
-            headers: { "Content-Type": "application/json" }
-        });
+        try {
+            const response = await fetch(`${teamPlayersURL}?team=${encodeURIComponent(teamName)}`, {
+                method: "GET",
+                headers: { "Content-Type": "application/json" }
+            });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (!data.body) {
+                throw new Error("Invalid response: No 'body' field in JSON");
+            }
+
+            const players = JSON.parse(data.body);
+
+            if (!players.players || !Array.isArray(players.players)) {
+                throw new Error("Invalid data format: 'players' key missing or not an array");
+            }
+
+            populatePlayerOptions(players.players);
+            selectedIncludedDiv.innerHTML = "";
+            selectedExcludedDiv.innerHTML = "";
+            includedPlayers.clear();
+
+        } catch (error) {
+            outputDiv.innerHTML = `<p style="color: red;">Error fetching player data</p>`;
+            console.error("Error fetching player data:", error);
         }
-
-        const data = await response.json();
-        
-        if (!data.body) {
-            throw new Error("Invalid response: No 'body' field in JSON");
-        }
-
-        const players = JSON.parse(data.body);
-
-        if (!players.players || !Array.isArray(players.players)) {
-            throw new Error("Invalid data format: 'players' key missing or not an array");
-        }
-
-        populatePlayerOptions(players.players);
-        selectedIncludedDiv.innerHTML = "";
-        selectedExcludedDiv.innerHTML = "";
-        includedPlayers.clear();
-
-    } catch (error) {
-        outputDiv.innerHTML = `<p style="color: red;">Error fetching player data</p>`;
-        console.error("Error fetching player data:", error);
     }
-}
-
 
     function populatePlayerOptions(players) {
         includeSelection.innerHTML = "";
@@ -119,6 +122,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         includeSelection.disabled = false;
         excludeSelection.disabled = false;
+
+        // Show "Minimum minutes" input field when players are available
+        if (players.length > 0) {
+            minMinutesInput.style.display = "inline";
+            minMinutesLabel.style.display = "inline";
+        }
     }
 
     function adjustSize(selectElement) {
@@ -188,4 +197,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         adjustSize(includeSelection);
         adjustSize(excludeSelection);
     }
+
+    // Ensure only integers are allowed in the input field
+    minMinutesInput.addEventListener("input", function () {
+        this.value = this.value.replace(/\D/g, ""); // Remove non-numeric characters
+        if (this.value === "") this.value = 0; // Default to 0 if empty
+    });
+
 });
