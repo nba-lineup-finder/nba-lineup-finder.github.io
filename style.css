@@ -7,7 +7,7 @@ body {
 
 .container {
     width: 90%;
-    max-width: 600px; /* Prevents it from being too wide on large screens */
+    max-width: 600px;
     margin: auto;
     padding: 20px;
     border: 1px solid #ddd;
@@ -17,7 +17,7 @@ body {
 
 .selection-container {
     display: flex;
-    flex-direction: column; /* Stack the selections on smaller screens */
+    flex-direction: column;
     gap: 15px;
     margin-top: 15px;
 }
@@ -69,27 +69,36 @@ button:hover {
 /* Responsive Design */
 @media (min-width: 600px) {
     .selection-container {
-        flex-direction: row; /* Side by side on larger screens */
+        flex-direction: row;
         justify-content: space-between;
     }
 }
 
 /* Style for selected players */
 .selected-group {
-    display: inline-block;
-    width: 48%;
-    vertical-align: top;
+    width: 100%;
+}
+
+.selected-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    min-height: 40px;
 }
 
 .selected-player {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     background: #f8f8f8;
     padding: 5px 10px;
-    margin: 5px 0;
+    margin: 5px;
     border-radius: 5px;
     border: 1px solid #ddd;
+    font-size: 14px;
 }
 
 /* Remove Player Button */
@@ -112,4 +121,11 @@ button:hover {
 
 .remove-player:hover {
     background: darkred;
+}
+
+/* Ensure Select Options Expand Based on Content */
+#includeSelection, #excludeSelection {
+    display: block;
+    width: 100%;
+    max-height: none;
 }
