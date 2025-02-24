@@ -28,7 +28,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%; /* Ensure both selection boxes take equal width */
 }
 
 select {

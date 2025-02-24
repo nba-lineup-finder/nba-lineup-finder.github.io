@@ -70,14 +70,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
 	if (infoIcon) {
-    const tooltipText = document.createElement("span");
-    tooltipText.classList.add("tooltip-text");
-    tooltipText.textContent = "Searches for 5-man lineups that have played more or equal to the minimum minutes selected";
-
-    infoIcon.classList.add("tooltip");
-    infoIcon.appendChild(tooltipText);
+		infoIcon.classList.add("tooltip");
+		infoIcon.innerHTML += '<span class="tooltip-text">Searches for 5 man lineups that have played more or equal to the minimum minutes selected</span>';
 	}
-
 	
     async function fetchPlayerData(teamName) {
         try {
