@@ -129,6 +129,7 @@ button:hover {
 .tooltip {
     position: relative;
     display: inline-block;
+	font-size: 12px;
 }
 
 .tooltip .tooltip-text {
