@@ -135,8 +135,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 		excludeSelection.disabled = false;
 	}
 
-    }
-
     function moveToSelected(player, category) {
         if (document.getElementById(`selected-${CSS.escape(player)}`)) return;
 
