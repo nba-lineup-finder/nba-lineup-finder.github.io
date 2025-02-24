@@ -22,12 +22,16 @@ body {
     margin-top: 15px;
 }
 
+/* Styling for the selection dropdowns */
 select {
     width: 100%;
     padding: 8px;
     font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
+/* Button Styles */
 button {
     width: 100%;
     padding: 10px;
@@ -38,10 +42,28 @@ button {
     background-color: #007bff;
     color: white;
     cursor: pointer;
+    transition: background 0.3s ease;
 }
 
 button:hover {
     background-color: #0056b3;
+}
+
+/* Minimum Minutes Input */
+#minMinutes {
+    width: 3.5em; /* Approx 5 characters wide */
+    text-align: center;
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+/* Ensures labels align properly */
+#minMinutesLabel {
+    font-weight: bold;
+    margin-top: 10px;
 }
 
 /* Responsive Design */
@@ -52,6 +74,7 @@ button:hover {
     }
 }
 
+/* Style for selected players */
 .selected-group {
     display: inline-block;
     width: 48%;
@@ -62,12 +85,14 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: none;
+    background: #f8f8f8;
     padding: 5px 10px;
     margin: 5px 0;
     border-radius: 5px;
+    border: 1px solid #ddd;
 }
 
+/* Remove Player Button */
 .remove-player {
     background: red;
     color: white;
@@ -82,4 +107,9 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: background 0.2s ease;
+}
+
+.remove-player:hover {
+    background: darkred;
 }
