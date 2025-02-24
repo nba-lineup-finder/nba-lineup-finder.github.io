@@ -127,7 +127,7 @@ button:hover {
 }
 
 .tooltip {
-    position: static;
+    position: relative;
     display: inline-block;
 }
 
