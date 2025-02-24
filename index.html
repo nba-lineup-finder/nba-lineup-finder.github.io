@@ -10,7 +10,12 @@
     <div class="container">
         <h1>NBA Lineup Finder</h1>
 
-        <h3>Select team:</h3>
+        <h3>
+            Select team: 
+            <span id="teamInfoIcon" class="tooltip">ℹ️
+                <span class="tooltip-text">Searches for 5-man lineups from selected team only</span>
+            </span>
+        </h3>
         <select id="TeamSelection" disabled>
             <option>Loading options...</option>
         </select>
@@ -30,11 +35,10 @@
 
         <div class="min-minutes-container">
             <label for="minMinutes" id="minMinutesLabel" style="display: none;">
-                Minimum minutes
+                Minimum minutes:
                 <span id="infoIcon" class="tooltip">ℹ️
-                    <span class="tooltip-text">Searches for 5-man lineups that have played the selected minimum minutes or more.</span>
+                    <span class="tooltip-text">Searches for 5-man lineups that have played the selected minimum minutes.</span>
                 </span>
-				:
             </label>
             <input type="number" id="minMinutes" min="0" value="0" style="display: none; text-align: center;">
             <button id="findLineupsBtn" style="display: none;">Find Lineups</button>
