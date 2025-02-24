@@ -7,7 +7,7 @@ body {
 
 .container {
     width: 90%;
-    max-width: 600px;
+    max-width: 600px; /* Prevents it from being too wide on large screens */
     margin: auto;
     padding: 20px;
     border: 1px solid #ddd;
@@ -17,16 +17,16 @@ body {
 
 .selection-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Stack the selections on smaller screens */
     gap: 15px;
     margin-top: 15px;
 }
 
 @media (min-width: 600px) {
     .selection-container {
-        flex-direction: row;
+        flex-direction: row; /* Side by side on larger screens */
         justify-content: space-between;
-        gap: 20px;
+        gap: 20px; /* Adjust spacing between boxes */
     }
 }
 
@@ -35,6 +35,7 @@ body {
     min-width: 0;
 }
 
+/* Styling for the selection dropdowns */
 select {
     width: 100%;
     padding: 8px;
@@ -43,6 +44,7 @@ select {
     border-radius: 4px;
 }
 
+/* Button Styles */
 button {
     width: 100%;
     padding: 10px;
@@ -60,12 +62,14 @@ button:hover {
     background-color: #0056b3;
 }
 
+/* Centering Find Lineups Button */
 #findLineupsBtn {
     display: block;
     margin: 20px auto;
-    width: 50%;
+    width: 50%; /* Adjust width as needed */
 }
 
+/* Minimum Minutes Input */
 #minMinutes {
     width: 5em; 
     text-align: center;
@@ -76,15 +80,13 @@ button:hover {
     margin-top: 10px;
 }
 
+/* Ensures labels align properly */
 #minMinutesLabel {
     font-weight: bold;
     margin-top: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
 }
 
+/* Style for selected players */
 .selected-group {
     display: inline-block;
     width: 48%;
@@ -102,6 +104,7 @@ button:hover {
     border: 1px solid #ddd;
 }
 
+/* Remove Player Button */
 .remove-player {
     background: red;
     color: white;
@@ -125,10 +128,7 @@ button:hover {
 
 .tooltip {
     position: relative;
-    display: inline-flex;
-    align-items: center;
-    font-size: 12px;
-    margin-left: 5px;
+    display: inline-block;
 }
 
 .tooltip .tooltip-text {
@@ -139,13 +139,15 @@ button:hover {
     text-align: center;
     padding: 5px;
     border-radius: 5px;
-    font-size: 12px;
     
+    /* Positioning */
     position: absolute;
     z-index: 1;
-    bottom: 125%;
+    bottom: 125%; /* Position above the icon */
     left: 50%;
     transform: translateX(-50%);
+
+    /* Fade-in effect */
     opacity: 0;
     transition: opacity 0.3s;
 }
