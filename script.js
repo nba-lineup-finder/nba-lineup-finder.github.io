@@ -6,8 +6,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     const selectMenu = document.getElementById("TeamSelection");
     const includeSelection = document.getElementById("includeSelection");
     const excludeSelection = document.getElementById("excludeSelection");
-	const infoIcon = document.getElementById("infoIcon");
-
 
     // Ensure selected players container exists
     let selectedPlayersContainer = document.getElementById("selectedPlayersContainer");
@@ -23,7 +21,12 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <h3>Excluded Players</h3>
                 <div id="selectedExcluded" class="selected-list"></div>
             </div>
-            <label for="minMinutes" id="minMinutesLabel" style="display: none;">Minimum minutes:</label>
+            <label for="minMinutes" id="minMinutesLabel" style="display: none;">
+                Minimum minutes:
+                <span class="tooltip">ℹ️
+                    <span class="tooltip-text">Enter the minimum minutes played for lineup consideration.</span>
+                </span>
+            </label>
             <input type="number" id="minMinutes" min="0" value="0" style="display: none; width: 3.5em; text-align: center;">
             <button id="findLineupsBtn" style="display: none; margin-left: 10px;">Find Lineups</button>
         `;
@@ -69,11 +72,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         fetchPlayerData(selectMenu.value);
     });
 
-	if (infoIcon) {
-		infoIcon.classList.add("tooltip");
-		infoIcon.innerHTML += '<span class="tooltip-text">Searches for 5 man lineups that have played more or equal to the minimum minutes selected</span>';
-	}
-	
     async function fetchPlayerData(teamName) {
         try {
             const response = await fetch(`${teamPlayersURL}?team=${encodeURIComponent(teamName)}`, {
@@ -114,32 +112,32 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     function populatePlayerOptions(players) {
-		includeSelection.innerHTML = "";
-		excludeSelection.innerHTML = "";
+        includeSelection.innerHTML = "";
+        excludeSelection.innerHTML = "";
 
-		// Dynamically set size to match the number of players, ensuring at least 6 rows are visible
-		let selectionSize = Math.max(players.length, 6);
-		includeSelection.size = selectionSize;
-		excludeSelection.size = selectionSize;
+        // Dynamically set size to match the number of players, ensuring at least 6 rows are visible
+        let selectionSize = Math.max(players.length, 6);
+        includeSelection.size = selectionSize;
+        excludeSelection.size = selectionSize;
 
-		players.forEach(player => {
-			let option1 = document.createElement("option");
-			option1.value = player;
-			option1.textContent = player;
-			option1.addEventListener("click", () => moveToSelected(player, "include"));
+        players.forEach(player => {
+            let option1 = document.createElement("option");
+            option1.value = player;
+            option1.textContent = player;
+            option1.addEventListener("click", () => moveToSelected(player, "include"));
 
-			let option2 = document.createElement("option");
-			option2.value = player;
-			option2.textContent = player;
-			option2.addEventListener("click", () => moveToSelected(player, "exclude"));
+            let option2 = document.createElement("option");
+            option2.value = player;
+            option2.textContent = player;
+            option2.addEventListener("click", () => moveToSelected(player, "exclude"));
 
-			includeSelection.appendChild(option1);
-			excludeSelection.appendChild(option2);
-			});
+            includeSelection.appendChild(option1);
+            excludeSelection.appendChild(option2);
+        });
 
-		includeSelection.disabled = false;
-		excludeSelection.disabled = false;
-	}
+        includeSelection.disabled = false;
+        excludeSelection.disabled = false;
+    }
 
     function moveToSelected(player, category) {
         if (document.getElementById(`selected-${CSS.escape(player)}`)) return;

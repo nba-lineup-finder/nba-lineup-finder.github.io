@@ -62,6 +62,13 @@ button:hover {
     background-color: #0056b3;
 }
 
+/* Centering Find Lineups Button */
+#findLineupsBtn {
+    display: block;
+    margin: 20px auto;
+    width: 50%; /* Adjust width as needed */
+}
+
 /* Minimum Minutes Input */
 #minMinutes {
     width: 5em; 
