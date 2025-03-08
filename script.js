@@ -216,57 +216,17 @@ document.addEventListener("DOMContentLoaded", async function () {
 			min_minutes: parseInt(minMinutesInput.value, 10) || 0
 		};
 
-		// NBA API base URL
-		const nbaApiUrlBase = 'https://stats.nba.com/stats/leaguelineupviz';
-		
-		// Get the minMinutesInput value
-		const minMinutes = parseInt(minMinutesInput.value, 10) || 0;
 
-		// Construct the NBA API URL with dynamic MinutesMin
-		const nbaApiUrl = `${nbaApiUrlBase}?Conference=&DateFrom=&DateTo=&Division=&GameSegment=&GroupQuantity=5&LastNGames=0&LeagueID=&Location=&MeasureType=Base&MinutesMin=${minMinutes}&Month=0&OpponentTeamID=0&Outcome=&PORound=&PaceAdjust=N&PerMode=Totals&Period=0&PlusMinus=N&Rank=N&Season=2024-25&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&TeamID=&VsConference=&VsDivision=`;
-
-		const nbaHeaders = {
-			"Host": "stats.nba.com",
-			"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:72.0) Gecko/20100101 Firefox/72.0",
-			"Accept": "application/json, text/plain, */*",
-			"Accept-Language": "en-US,en;q=0.5",
-			"Accept-Encoding": "gzip, deflate, br",
-			"x-nba-stats-origin": "stats",
-			"x-nba-stats-token": "true",
-			"Connection": "keep-alive",
-			"Referer": "https://stats.nba.com/",
-			"Pragma": "no-cache",
-			"Cache-Control": "no-cache"
-		};
-
-		try {
-			// First request to NBA API with dynamic MinutesMin
-			const response = await fetch(nbaApiUrl, {
-				method: "GET",
-				headers: nbaHeaders
-			});
-
-			const nbaData = await response.json();
-			console.log("NBA Data:", nbaData);
-
-			// Once we have the NBA data, we now prepare the requestData for your second API call
-			const lineupRequestData = {
-				team: selectMenu.value,
-				included_players: Array.from(includedPlayers),
-				excluded_players: Array.from(excludedPlayers),
-				min_minutes: minMinutes,
-				nba_data: nbaData // Pass NBA data to your second request
-			};
-
+		try {// Once we have the NBA data, we now prepare the requestData for your second API call
 			// Make the second request using the result of the NBA API
-			const findLineupsURL = "YOUR_SECOND_API_URL";  // Replace with the second API URL
-			const secondResponse = await fetch(findLineupsURL, {
+			const findLineupsURL = "https://5ybwp5gdkf.execute-api.us-east-2.amazonaws.com/test";  // Replace with the second API URL
+			const lineupsResponse = await fetch(findLineupsURL, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(lineupRequestData)
 			});
 
-			const finalResult = await secondResponse.json();
+			const finalResult = await lineupsResponse.json();
 			console.log("Final Lineup Data:", finalResult);
 
 		} catch (error) {
