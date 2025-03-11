@@ -221,8 +221,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 		const downloadBtn = document.getElementById("downloadBtn");
 
 		try {
-			// Clear previous output
+			// Clear previous output but keep the div visible
 			outputDiv.innerHTML = "";
+			outputDiv.style.display = "block";
 			downloadBtn.style.display = "none";
 
 			// Show loading indicator & disable button
@@ -252,9 +253,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 		} catch (error) {
 			console.error("Error fetching data:", error);
-			alert("Failed to fetch lineup data. Please try again.");
+
+			// Show error message in output div
+			outputDiv.innerHTML = `<p style="color: red; font-weight: bold;">⚠️ Error: ${error.message}</p>`;
+			outputDiv.style.display = "block";
 		} finally {
-			// Hide loading indicator & re-enable button
+			// Hide loading indicator & re-enable button (even on error)
 			findLineupsBtn.disabled = false;
 			loadingIndicator.style.display = "none";
 		}
