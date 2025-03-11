@@ -203,7 +203,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         excludeSelection.appendChild(option2);
     }
 
-	 findLineupsBtn.addEventListener("click", async function () {
+	findLineupsBtn.addEventListener("click", async function () {
 		if (includedPlayers.size === 0 && excludedPlayers.size === 0) {
 			alert("You must include at least one included or excluded player.");
 			return;
@@ -214,6 +214,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 			included_players: Array.from(includedPlayers),
 			excluded_players: Array.from(excludedPlayers),
 			min_minutes: parseInt(minMinutesInput.value, 10) || 0
+		};
+
+		// Wrap the requestData inside a "body" field and stringify it
+		const payload = {
+			body: JSON.stringify(requestData)
 		};
 
 		const loadingIndicator = document.getElementById("loadingIndicator");
@@ -234,7 +239,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 			const response = await fetch(findLineupsURL, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(requestData)
+				body: JSON.stringify(payload)  // Send the wrapped "body" field
 			});
 
 			if (!response.ok) {
