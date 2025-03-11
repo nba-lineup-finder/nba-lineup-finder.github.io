@@ -232,7 +232,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 			const findLineupsURL = "https://5ybwp5gdkf.execute-api.us-east-2.amazonaws.com/test"; 
 			const response = await fetch(findLineupsURL, {
-				method: "POST",
+				method: "GET",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(requestData)
 			});
