@@ -203,7 +203,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         excludeSelection.appendChild(option2);
     }
 
-    findLineupsBtn.addEventListener("click", async function () {
+	 findLineupsBtn.addEventListener("click", async function () {
 		if (includedPlayers.size === 0 && excludedPlayers.size === 0) {
 			alert("You must include at least one included or excluded player.");
 			return;
@@ -254,15 +254,23 @@ document.addEventListener("DOMContentLoaded", async function () {
 		} catch (error) {
 			console.error("Error fetching data:", error);
 
-			// Show error message in output div
-			outputDiv.innerHTML = `<p style="color: red; font-weight: bold;">⚠️ Error: ${error.message}</p>`;
+			// Show error message in output div, but don't hide the button
+			outputDiv.innerHTML = `
+				<p style="color: red; font-weight: bold;">⚠️ Error: ${error.message}</p>
+				<p>Please try again or check your selections.</p>
+			`;
 			outputDiv.style.display = "block";
+
+			// Ensure button and div are still visible
+			findLineupsBtn.disabled = false;
+			loadingIndicator.style.display = "none";
 		} finally {
 			// Hide loading indicator & re-enable button (even on error)
 			findLineupsBtn.disabled = false;
 			loadingIndicator.style.display = "none";
 		}
 	});
+
 
 // Converts CSV to HTML table
 	function generateTableFromCSV(csv) {
