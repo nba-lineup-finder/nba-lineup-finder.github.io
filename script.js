@@ -216,23 +216,75 @@ document.addEventListener("DOMContentLoaded", async function () {
 			min_minutes: parseInt(minMinutesInput.value, 10) || 0
 		};
 
+		const loadingIndicator = document.getElementById("loadingIndicator");
+		const outputDiv = document.getElementById("output");
+		const downloadBtn = document.getElementById("downloadBtn");
 
-		try {// Once we have the NBA data, we now prepare the requestData for your second API call
-			// Make the second request using the result of the NBA API
-			const findLineupsURL = "https://5ybwp5gdkf.execute-api.us-east-2.amazonaws.com/test";  // Replace with the second API URL
-			const lineupsResponse = await fetch(findLineupsURL, {
+		try {
+			// Clear previous output
+			outputDiv.innerHTML = "";
+			downloadBtn.style.display = "none";
+
+			// Show loading indicator & disable button
+			findLineupsBtn.disabled = true;
+			loadingIndicator.style.display = "block";
+
+			const findLineupsURL = "https://5ybwp5gdkf.execute-api.us-east-2.amazonaws.com/test"; 
+			const response = await fetch(findLineupsURL, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(lineupRequestData)
+				body: JSON.stringify(requestData)
 			});
 
-			const finalResult = await lineupsResponse.json();
-			console.log("Final Lineup Data:", finalResult);
+			if (!response.ok) {
+				throw new Error(`API error: ${response.status} ${response.statusText}`);
+			}
+
+			const csvData = await response.text();  // Assuming API returns CSV as plain text
+			console.log("CSV Data:", csvData);
+
+			// Convert CSV to table & display
+			outputDiv.innerHTML = generateTableFromCSV(csvData);
+			downloadBtn.style.display = "block";
+
+			// Store CSV data for download
+			downloadBtn.onclick = () => downloadCSV(csvData);
 
 		} catch (error) {
 			console.error("Error fetching data:", error);
+			alert("Failed to fetch lineup data. Please try again.");
+		} finally {
+			// Hide loading indicator & re-enable button
+			findLineupsBtn.disabled = false;
+			loadingIndicator.style.display = "none";
 		}
 	});
 
+// Converts CSV to HTML table
+	function generateTableFromCSV(csv) {
+		const rows = csv.trim().split("\n").map(row => row.split(","));
+		let tableHTML = "<table border='1' style='width:100%; text-align:center; border-collapse:collapse;'>";
+
+		rows.forEach((row, index) => {
+			tableHTML += `<tr style="background-color:${index === 0 ? '#ddd' : '#fff'};">`;
+			row.forEach(cell => tableHTML += `<td>${cell.trim()}</td>`);
+			tableHTML += "</tr>";
+		});
+
+		tableHTML += "</table>";
+		return tableHTML;
+	}
+
+	// Download CSV file
+	function downloadCSV(csvData) {
+		const blob = new Blob([csvData], { type: "text/csv" });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement("a");
+		a.href = url;
+		a.download = "lineup_data.csv";
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+	}
 
 });

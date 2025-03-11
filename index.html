@@ -20,8 +20,6 @@
             <option>Loading options...</option>
         </select>
 
-        <div id="output"></div>
-
         <div class="selection-container">
             <div class="selection-box">
                 <h3>Include Players (Max 5)
@@ -42,8 +40,7 @@
 
         <div class="min-minutes-container">
             <label for="minMinutes" id="minMinutesLabel" style="display: none;">
-                
-				<p>Minimum minutes
+                <p>Minimum minutes
                 <span id="infoIcon" class="tooltip">ℹ️
                     <span class="tooltip-text">Searches for 5-man lineups that have played at least the minimum minutes.</span>
                 </span>:
@@ -52,6 +49,14 @@
             <input type="number" id="minMinutes" min="0" value="0" style="display: none; text-align: center;">
             <button id="findLineupsBtn" style="display: none;">Find Lineups</button>
         </div>
+
+        <!-- Loading Indicator -->
+        <div id="loadingIndicator" style="display: none; text-align: center; margin-top: 10px;">
+            <p>Loading... ⏳</p>
+        </div>
+
+        <!-- Output Table -->
+        <div id="output"></div>
 
         <button id="downloadBtn" style="display:none;">Download Data</button>
     </div>
