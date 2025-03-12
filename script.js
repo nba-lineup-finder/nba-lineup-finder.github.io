@@ -247,7 +247,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 			}
 
 			const lineupData = await response.text();  // Assuming API returns CSV as plain text
-			console.log("CSV Data:", lineupData);
+			console.log("CSV Data:", lineupData.output);
 
 			// Convert CSV to table & display
 			 outputDiv.innerHTML = `${lineupData.header} <br> ${lineupData.last_update} <br><br>`;
