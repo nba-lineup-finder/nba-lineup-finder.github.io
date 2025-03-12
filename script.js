@@ -248,12 +248,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 			const lineupResponse = await response.text();
 			const lineupData = JSON.parse(lineupResponse);
-			console.log("CSV Data:", lineupResponse);
-			console.log("CSV Data:", lineupData);
 			console.log("CSV Data:", lineupData.csv);
 
 			// Convert CSV to table & display
-			 outputDiv.innerHTML = `${lineupData.header} <br> ${lineupData.last_update} <br><br>`;
+			outputDiv.innerHTML = `${lineupData.header} <br> ${lineupData.last_update} <br><br>`;
 			outputDiv.appendChild(generateTableFromCSV(lineupData.csv));
 			downloadBtn.style.display = "block";
 
@@ -286,26 +284,41 @@ document.addEventListener("DOMContentLoaded", async function () {
 		// Split into rows and trim whitespace
 		const rows = csvText.trim().split("\n").map(row => row.split(",").map(cell => cell.trim()));
 
-		// Start table with styling
-		let tableHTML = `
-			<table border="1" style="width:100%; text-align:center; border-collapse:collapse;">
-				<thead>
-					<tr style="background-color:#ddd;">
-						${rows[0].map(cell => `<th>${escapeHTML(cell)}</th>`).join("")}
-					</tr>
-				</thead>
-				<tbody>
-					${rows.slice(1).map(row => `
-						<tr>
-							${row.map(cell => `<td>${escapeHTML(cell)}</td>`).join("")}
-						</tr>
-					`).join("")}
-				</tbody>
-			</table>
-		`;
+		// Create a table element
+		const table = document.createElement("table");
+		table.setAttribute("border", "1");
+		table.style.width = "100%";
+		table.style.textAlign = "center";
+		table.style.borderCollapse = "collapse";
 
-		return tableHTML;
+		// Create the header row
+		const thead = document.createElement("thead");
+		const headerRow = document.createElement("tr");
+		rows[0].forEach(cell => {
+			const th = document.createElement("th");
+			th.textContent = cell; // Using textContent to avoid XSS vulnerabilities
+			headerRow.appendChild(th);
+		});
+		thead.appendChild(headerRow);
+		table.appendChild(thead);
+
+		// Create the body rows
+		const tbody = document.createElement("tbody");
+		rows.slice(1).forEach(row => {
+			const tr = document.createElement("tr");
+			row.forEach(cell => {
+				const td = document.createElement("td");
+				td.textContent = cell; // Using textContent to avoid XSS vulnerabilities
+				tr.appendChild(td);
+			});
+			tbody.appendChild(tr);
+		});
+		table.appendChild(tbody);
+
+		// Return the table DOM element
+		return table;
 	}
+
 
 // Escapes HTML special characters to prevent injection
 function escapeHTML(str) {
