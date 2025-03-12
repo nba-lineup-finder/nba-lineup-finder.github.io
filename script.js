@@ -246,7 +246,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 				throw new Error(`API error: ${response.status} ${response.statusText}`);
 			}
 
-			const lineupData = await response.text();  // Assuming API returns CSV as plain text
+			const lineupResponse = await response.text();
+			const lineupData = JSON.parse(lineupResponse);
 			console.log("CSV Data:", lineupData.output);
 
 			// Convert CSV to table & display
