@@ -250,7 +250,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 			console.log("CSV Data:", lineupData);
 
 			// Convert CSV to table & display
-			outputDiv.innerHTML = generateTableFromCSV(lineupData.output);
+			 outputDiv.innerHTML = `${lineupData.header} <br> ${lineupData.last_update} <br><br>`;
+			outputDiv.appendChild(generateTableFromCSV(lineupData.output);)
 			downloadBtn.style.display = "block";
 
 			// Store CSV data for download
