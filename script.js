@@ -251,7 +251,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 			// Convert CSV to table & display
 			 outputDiv.innerHTML = `${lineupData.header} <br> ${lineupData.last_update} <br><br>`;
-			outputDiv.appendChild(generateTableFromCSV(lineupData.output);)
+			outputDiv.appendChild(generateTableFromCSV(lineupData.output));
 			downloadBtn.style.display = "block";
 
 			// Store CSV data for download
@@ -279,19 +279,36 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
 // Converts CSV to HTML table
-	function generateTableFromCSV(csv) {
-		const rows = csv.trim().split("\n").map(row => row.split(","));
-		let tableHTML = "<table border='1' style='width:100%; text-align:center; border-collapse:collapse;'>";
+	function generateTableFromCSV(csvText) {
+		// Split into rows and trim whitespace
+		const rows = csvText.trim().split("\n").map(row => row.split(",").map(cell => cell.trim()));
 
-		rows.forEach((row, index) => {
-			tableHTML += `<tr style="background-color:${index === 0 ? '#ddd' : '#fff'};">`;
-			row.forEach(cell => tableHTML += `<td>${cell.trim()}</td>`);
-			tableHTML += "</tr>";
-		});
+		// Start table with styling
+		let tableHTML = `
+			<table border="1" style="width:100%; text-align:center; border-collapse:collapse;">
+				<thead>
+					<tr style="background-color:#ddd;">
+						${rows[0].map(cell => `<th>${escapeHTML(cell)}</th>`).join("")}
+					</tr>
+				</thead>
+				<tbody>
+					${rows.slice(1).map(row => `
+						<tr>
+							${row.map(cell => `<td>${escapeHTML(cell)}</td>`).join("")}
+						</tr>
+					`).join("")}
+				</tbody>
+			</table>
+		`;
 
-		tableHTML += "</table>";
 		return tableHTML;
 	}
+
+// Escapes HTML special characters to prevent injection
+function escapeHTML(str) {
+    return str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
 
 	// Download CSV file
 	function downloadCSV(csvData) {
