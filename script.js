@@ -248,15 +248,15 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 			const lineupResponse = await response.text();
 			const lineupData = JSON.parse(lineupResponse);
-			console.log("CSV Data:", lineupData.output);
+			console.log("CSV Data:", lineupData.csv);
 
 			// Convert CSV to table & display
 			 outputDiv.innerHTML = `${lineupData.header} <br> ${lineupData.last_update} <br><br>`;
-			outputDiv.appendChild(generateTableFromCSV(lineupData.output));
+			outputDiv.appendChild(generateTableFromCSV(lineupData.csv));
 			downloadBtn.style.display = "block";
 
 			// Store CSV data for download
-			downloadBtn.onclick = () => downloadCSV(lineupData.output);
+			downloadBtn.onclick = () => downloadCSV(lineupData.csv);
 
 		} catch (error) {
 			console.error("Error fetching data:", error);
