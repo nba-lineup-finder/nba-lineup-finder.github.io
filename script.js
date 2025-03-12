@@ -248,7 +248,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 			const lineupResponse = await response.text();
 			const lineupData = JSON.parse(lineupResponse);
-			console.log("CSV Data:", lineupReponse);
+			console.log("CSV Data:", lineupResponse);
 			console.log("CSV Data:", lineupData);
 			console.log("CSV Data:", lineupData.csv);
 
