@@ -246,15 +246,15 @@ document.addEventListener("DOMContentLoaded", async function () {
 				throw new Error(`API error: ${response.status} ${response.statusText}`);
 			}
 
-			const csvData = await response.text();  // Assuming API returns CSV as plain text
-			console.log("CSV Data:", csvData);
+			const lineupData = await response.text();  // Assuming API returns CSV as plain text
+			console.log("CSV Data:", lineupData);
 
 			// Convert CSV to table & display
-			outputDiv.innerHTML = generateTableFromCSV(csvData);
+			outputDiv.innerHTML = generateTableFromCSV(lineupData.output);
 			downloadBtn.style.display = "block";
 
 			// Store CSV data for download
-			downloadBtn.onclick = () => downloadCSV(csvData);
+			downloadBtn.onclick = () => downloadCSV(lineupData.output);
 
 		} catch (error) {
 			console.error("Error fetching data:", error);
