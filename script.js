@@ -96,6 +96,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
 
             populatePlayerOptions(players.players);
+			const currentTeam = "";
             if (teamName !== currentTeam) {
 				selectedIncludedDiv.innerHTML = "";
 				selectedExcludedDiv.innerHTML = "";
