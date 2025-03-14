@@ -279,45 +279,61 @@ document.addEventListener("DOMContentLoaded", async function () {
 	});
 
 
-// Converts CSV to HTML table
 	function generateTableFromCSV(csvText) {
-		// Split into rows and trim whitespace
-		const rows = csvText.trim().split("\n").map(row => row.split(",").map(cell => cell.trim()));
+	  // Split into rows and trim whitespace
+	  const rows = csvText.trim().split("\n").map(row => row.split(",").map(cell => cell.trim()));
 
-		// Create a table element
-		const table = document.createElement("table");
-		table.setAttribute("border", "1");
-		table.style.width = "100%";
-		table.style.textAlign = "center";
-		table.style.borderCollapse = "collapse";
+	  // Create a table element
+	  const table = document.createElement("table");
+	  table.setAttribute("border", "1");
+	  table.style.width = "100%";
+	  table.style.textAlign = "center";
+	  table.style.borderCollapse = "collapse";
 
-		// Create the header row
-		const thead = document.createElement("thead");
-		const headerRow = document.createElement("tr");
-		rows[0].forEach(cell => {
-			const th = document.createElement("th");
-			th.textContent = cell; // Using textContent to avoid XSS vulnerabilities
-			headerRow.appendChild(th);
+	  // Create the header row
+	  const thead = document.createElement("thead");
+	  const headerRow = document.createElement("tr");
+	  const headers = rows[0];
+
+	  // Find the index of the "NRTG" column
+	  const nrtgColumnIndex = headers.indexOf('NRTG');
+
+	  headers.forEach(cell => {
+		const th = document.createElement("th");
+		th.textContent = cell; // Using textContent to avoid XSS vulnerabilities
+		headerRow.appendChild(th);
+	  });
+	  thead.appendChild(headerRow);
+	  table.appendChild(thead);
+
+	  // Create the body rows
+	  const tbody = document.createElement("tbody");
+	  rows.slice(1).forEach(row => {
+		const tr = document.createElement("tr");
+		row.forEach((cell, index) => {
+		  const td = document.createElement("td");
+		  td.textContent = cell; // Using textContent to avoid XSS vulnerabilities
+
+		  // Check if this is the "NRTG" column and style the cell accordingly
+		  if (index === nrtgColumnIndex) {
+			const number = parseFloat(cell);
+			if (number >= 0) {
+			  td.style.color = "green"; // Positive numbers in green
+			} else {
+			  td.style.color = "red"; // Negative numbers in red
+			}
+		  }
+
+		  tr.appendChild(td);
 		});
-		thead.appendChild(headerRow);
-		table.appendChild(thead);
+		tbody.appendChild(tr);
+	  });
+	  table.appendChild(tbody);
 
-		// Create the body rows
-		const tbody = document.createElement("tbody");
-		rows.slice(1).forEach(row => {
-			const tr = document.createElement("tr");
-			row.forEach(cell => {
-				const td = document.createElement("td");
-				td.textContent = cell; // Using textContent to avoid XSS vulnerabilities
-				tr.appendChild(td);
-			});
-			tbody.appendChild(tr);
-		});
-		table.appendChild(tbody);
-
-		// Return the table DOM element
-		return table;
+	  // Return the table DOM element
+	  return table;
 	}
+
 
 
 // Escapes HTML special characters to prevent injection
