@@ -254,6 +254,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 			const headerElement = document.createElement("p");
 			headerElement.innerHTML = `${lineupData.header} <br> ${lineupData.last_update} <br><br>`;
 			
+			console.log(lineupData.csv)
+			
 			// if already have table, remove it
 			const existingHeader = outputDiv.querySelector("p"); // Assuming header is inside a <p> tag
 			const existingTable = outputDiv.querySelector("table"); // Assuming table is inside a <table> tag
