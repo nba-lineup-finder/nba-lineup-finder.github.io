@@ -3,30 +3,33 @@ body {
     text-align: center;
     margin: 20px;
     padding: 0;
+    background-color: #121212; /* Dark background */
+    color: #e0e0e0; /* Light text for readability */
 }
 
 .container {
     width: 90%;
-    max-width: 600px; /* Prevents it from being too wide on large screens */
+    max-width: 600px;
     margin: auto;
     padding: 20px;
-    border: 1px solid #ddd;
+    border: 1px solid #333;
     border-radius: 8px;
-    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 2px 12px rgba(255, 255, 255, 0.1);
+    background-color: #1e1e1e; /* Dark container background */
 }
 
 .selection-container {
     display: flex;
-    flex-direction: column; /* Stack the selections on smaller screens */
+    flex-direction: column;
     gap: 15px;
     margin-top: 15px;
 }
 
 @media (min-width: 600px) {
     .selection-container {
-        flex-direction: row; /* Side by side on larger screens */
+        flex-direction: row;
         justify-content: space-between;
-        gap: 20px; /* Adjust spacing between boxes */
+        gap: 20px;
     }
 }
 
@@ -40,8 +43,10 @@ select {
     width: 100%;
     padding: 8px;
     font-size: 16px;
-    border: 1px solid #ccc;
+    border: 1px solid #555;
     border-radius: 4px;
+    background-color: #2c2c2c;
+    color: #e0e0e0;
 }
 
 /* Button Styles */
@@ -66,17 +71,19 @@ button:hover {
 #findLineupsBtn {
     display: block;
     margin: 20px auto;
-    width: 50%; /* Adjust width as needed */
+    width: 50%;
 }
 
 /* Minimum Minutes Input */
 #minMinutes {
-    width: 5em; 
+    width: 5em;
     text-align: center;
     padding: 5px;
     font-size: 14px;
-    border: 1px solid #ccc;
+    border: 1px solid #555;
     border-radius: 4px;
+    background-color: #2c2c2c;
+    color: #e0e0e0;
     margin-top: 10px;
 }
 
@@ -97,11 +104,12 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #f8f8f8;
+    background: #2c2c2c;
     padding: 5px 10px;
     margin: 5px 0;
     border-radius: 5px;
-    border: 1px solid #ddd;
+    border: 1px solid #555;
+    color: #e0e0e0;
 }
 
 /* Remove Player Button */
@@ -129,7 +137,7 @@ button:hover {
 .tooltip {
     position: relative;
     display: inline-block;
-	font-size: 12px;
+    font-size: 12px;
 }
 
 .tooltip .tooltip-text {
@@ -140,15 +148,11 @@ button:hover {
     text-align: center;
     padding: 5px;
     border-radius: 5px;
-    
-    /* Positioning */
     position: absolute;
     z-index: 1;
-    bottom: 125%; /* Position above the icon */
+    bottom: 125%;
     left: 50%;
     transform: translateX(-50%);
-
-    /* Fade-in effect */
     opacity: 0;
     transition: opacity 0.3s;
 }

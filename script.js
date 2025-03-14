@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             fetchPlayerData(selectMenu.value);
         }
     } catch (error) {
-        selectMenu.innerHTML = "<option>Error loading options</option>";
+        selectMenu.innerHTML = "<option>Error loading options</option>. Try refreshing site.";
         console.error("Error fetching dropdown options:", error);
     }
 
