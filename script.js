@@ -270,7 +270,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		outputDiv.insertBefore(headerElement, outputDiv.firstChild);
 
 		// Pagination variables
-		const rowsPerPage = 20;
+		const rowsPerPage = 5;
 		let currentPage = 1;
 		const rows = lineupData.csv.trim().split("\n").map(row => row.split(",").map(cell => cell.trim()));
 
