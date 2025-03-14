@@ -251,8 +251,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 			const lineupResponse = await response.text();
 			const lineupData = JSON.parse(lineupResponse);
 
-			// Convert CSV to table & display
-			outputDiv.innerHTML = `${lineupData.header} <br> ${lineupData.last_update} <br><br>`;
+			const headerElement = document.createElement("p");
+			headerElement.innerHTML = `${lineupData.header} <br> ${lineupData.last_update} <br><br>`;
+			outputDiv.appendChild(headerElement);
 			outputDiv.appendChild(generateTableFromCSV(lineupData.csv));
 			downloadBtn.style.display = "block";
 
