@@ -204,94 +204,192 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
 	findLineupsBtn.addEventListener("click", async function () {
-		if (includedPlayers.size === 0 && excludedPlayers.size === 0) {
-			alert("You must include at least one included or excluded player.");
-			return;
+	  if (includedPlayers.size === 0 && excludedPlayers.size === 0) {
+		alert("You must include at least one included or excluded player.");
+		return;
+	  }
+
+	  const requestData = {
+		team: selectMenu.value,
+		included_players: Array.from(includedPlayers),
+		excluded_players: Array.from(excludedPlayers),
+		min_minutes: parseInt(minMinutesInput.value, 10) || 0
+	  };
+
+	  // Wrap the requestData inside a "body" field and stringify it
+	  const payload = {
+		body: JSON.stringify(requestData)
+	  };
+
+	  const loadingIndicator = document.getElementById("loadingIndicator");
+	  const outputDiv = document.getElementById("output");
+	  const downloadBtn = document.getElementById("downloadBtn");
+
+	  try {
+		outputDiv.style.display = "block";
+		downloadBtn.style.display = "none";
+
+		// Show loading indicator & disable button
+		findLineupsBtn.disabled = true;
+		loadingIndicator.style.display = "block";
+
+		minMinutesInput.style.display = "inline-block";
+		minMinutesLabel.style.display = "inline-block";	
+		findLineupsBtn.style.display = "inline-block";
+
+		const findLineupsURL = "https://5ybwp5gdkf.execute-api.us-east-2.amazonaws.com/test"; 
+		const response = await fetch(findLineupsURL, {
+		  method: "POST",
+		  headers: { "Content-Type": "application/json" },
+		  body: JSON.stringify(payload)  // Send the wrapped "body" field
+		});
+
+		if (!response.ok) {
+		  throw new Error(`API error: ${response.status} ${response.statusText}`);
 		}
 
-		const requestData = {
-			team: selectMenu.value,
-			included_players: Array.from(includedPlayers),
-			excluded_players: Array.from(excludedPlayers),
-			min_minutes: parseInt(minMinutesInput.value, 10) || 0
-		};
+		const lineupResponse = await response.text();
+		const lineupData = JSON.parse(lineupResponse);
 
-		// Wrap the requestData inside a "body" field and stringify it
-		const payload = {
-			body: JSON.stringify(requestData)
-		};
+		const headerElement = document.createElement("p");
+		headerElement.innerHTML = `
+		  <h3>${lineupData.header}</h3>
+		  <span style="font-size: 0.8em; color: gray;">${lineupData.last_update}</span>
+		  <br><br>
+		`;
 
-		const loadingIndicator = document.getElementById("loadingIndicator");
-		const outputDiv = document.getElementById("output");
-		const downloadBtn = document.getElementById("downloadBtn");
+		// if already have table, remove it
+		const existingHeader = outputDiv.querySelector("p"); // Assuming header is inside a <p> tag
+		const existingTable = outputDiv.querySelector("table"); // Assuming table is inside a <table> tag
+		const existingPagination = outputDiv.querySelector(".pagination"); // For pagination controls
+		if (existingHeader) existingHeader.remove();
+		if (existingTable) existingTable.remove();
+		if (existingPagination) existingPagination.remove();
 
-		try {
-			outputDiv.style.display = "block";
-			downloadBtn.style.display = "none";
+		// Insert the header element at the start of outputDiv
+		outputDiv.insertBefore(headerElement, outputDiv.firstChild);
 
-			// Show loading indicator & disable button
-			findLineupsBtn.disabled = true;
-			loadingIndicator.style.display = "block";
-			
-			minMinutesInput.style.display = "inline-block";
-			minMinutesLabel.style.display = "inline-block";	
-			findLineupsBtn.style.display = "inline-block";
+		// Pagination variables
+		const rowsPerPage = 20;
+		let currentPage = 1;
+		const rows = lineupData.csv.trim().split("\n").map(row => row.split(",").map(cell => cell.trim()));
 
-			const findLineupsURL = "https://5ybwp5gdkf.execute-api.us-east-2.amazonaws.com/test"; 
-			const response = await fetch(findLineupsURL, {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(payload)  // Send the wrapped "body" field
+		// Function to create table
+		function createTable(rowsToDisplay) {
+		  const table = document.createElement("table");
+		  table.setAttribute("border", "1");
+		  table.style.width = "100%";
+		  table.style.textAlign = "center";
+		  table.style.borderCollapse = "collapse";
+
+		  const thead = document.createElement("thead");
+		  const headerRow = document.createElement("tr");
+		  const headers = rows[0]; // Header row from CSV data
+
+		  // Create the table header
+		  headers.forEach(cell => {
+			const th = document.createElement("th");
+			th.textContent = cell; // Using textContent to avoid XSS vulnerabilities
+			headerRow.appendChild(th);
+		  });
+		  thead.appendChild(headerRow);
+		  table.appendChild(thead);
+
+		  const tbody = document.createElement("tbody");
+		  rowsToDisplay.forEach(row => {
+			const tr = document.createElement("tr");
+			row.forEach(cell => {
+			  const td = document.createElement("td");
+			  td.textContent = cell; // Using textContent to avoid XSS vulnerabilities
+			  tr.appendChild(td);
 			});
-
-			if (!response.ok) {
-				throw new Error(`API error: ${response.status} ${response.statusText}`);
-			}
-
-			const lineupResponse = await response.text();
-			const lineupData = JSON.parse(lineupResponse);
-
-			const headerElement = document.createElement("p");
-			headerElement.innerHTML = `
-			  <h3>${lineupData.header}</h3>
-			  <span style="font-size: 0.8em; color: gray;">${lineupData.last_update}</span>
-			  <br><br>
-			`;
-						
-			// if already have table, remove it
-			const existingHeader = outputDiv.querySelector("p"); // Assuming header is inside a <p> tag
-			const existingTable = outputDiv.querySelector("table"); // Assuming table is inside a <table> tag
-			if (existingHeader) existingHeader.remove();
-			if (existingTable) existingTable.remove();
-			
-			// Insert the header element and table at the start of outputDiv
-			outputDiv.insertBefore(generateTableFromCSV(lineupData.csv), outputDiv.firstChild);
-			outputDiv.insertBefore(headerElement, outputDiv.firstChild);
-
-			downloadBtn.style.display = "block";
-
-			// Store CSV data for download
-			downloadBtn.onclick = () => downloadCSV(lineupData.csv);
-
-		} catch (error) {
-			console.error("Error fetching data:", error);
-
-			// Show error message in output div, but don't hide the button
-			outputDiv.innerHTML = `
-				<p style="color: red; font-weight: bold;">⚠️ Error: ${error.message}</p>
-				<p>Please try again or check your selections.</p>
-			`;
-			outputDiv.style.display = "block";
-
-			// Ensure button and div are still visible
-			findLineupsBtn.disabled = false;
-			loadingIndicator.style.display = "none";
-		} finally {
-			// Hide loading indicator & re-enable button (even on error)
-			findLineupsBtn.disabled = false;
-			loadingIndicator.style.display = "none";
+			tbody.appendChild(tr);
+		  });
+		  table.appendChild(tbody);
+		  return table;
 		}
+
+		// Function to render the current page
+		function renderPage(page) {
+		  const start = (page - 1) * rowsPerPage + 1;
+		  const end = Math.min(start + rowsPerPage - 1, rows.length - 1);
+
+		  const rowsToDisplay = rows.slice(start, end + 1);
+		  const table = createTable(rowsToDisplay);
+		  outputDiv.appendChild(table);
+		}
+
+		// Function to create pagination controls
+		function createPaginationControls() {
+		  const paginationDiv = document.createElement("div");
+		  paginationDiv.classList.add("pagination");
+
+		  const totalPages = Math.ceil((rows.length - 1) / rowsPerPage);
+
+		  // Previous button
+		  if (currentPage > 1) {
+			const prevButton = document.createElement('button');
+			prevButton.textContent = 'Prev';
+			prevButton.addEventListener('click', () => {
+			  currentPage--;
+			  outputDiv.innerHTML = ''; // Clear current content
+			  outputDiv.appendChild(headerElement); // Re-add header
+			  renderPage(currentPage);
+			  createPaginationControls(); // Re-create pagination controls
+			});
+			paginationDiv.appendChild(prevButton);
+		  }
+
+		  // Page number
+		  const pageNumber = document.createElement('span');
+		  pageNumber.textContent = ` Page ${currentPage} of ${totalPages} `;
+		  paginationDiv.appendChild(pageNumber);
+
+		  // Next button
+		  if (currentPage < totalPages) {
+			const nextButton = document.createElement('button');
+			nextButton.textContent = 'Next';
+			nextButton.addEventListener('click', () => {
+			  currentPage++;
+			  outputDiv.innerHTML = ''; // Clear current content
+			  outputDiv.appendChild(headerElement); // Re-add header
+			  renderPage(currentPage);
+			  createPaginationControls(); // Re-create pagination controls
+			});
+			paginationDiv.appendChild(nextButton);
+		  }
+
+		  outputDiv.appendChild(paginationDiv);
+		}
+
+		// Render the first page and pagination controls
+		renderPage(currentPage);
+		createPaginationControls();
+
+		// Show download button and handle download
+		downloadBtn.style.display = "block";
+		downloadBtn.onclick = () => downloadCSV(lineupData.csv);
+
+	  } catch (error) {
+		console.error("Error fetching data:", error);
+
+		// Show error message in output div, but don't hide the button
+		outputDiv.innerHTML = `
+		  <p style="color: red; font-weight: bold;">⚠️ Error: ${error.message}</p>
+		  <p>Please try again or check your selections.</p>
+		`;
+		outputDiv.style.display = "block";
+
+		// Ensure button and div are still visible
+		findLineupsBtn.disabled = false;
+		loadingIndicator.style.display = "none";
+	  } finally {
+		// Hide loading indicator & re-enable button (even on error)
+		findLineupsBtn.disabled = false;
+		loadingIndicator.style.display = "none";
+	  }
 	});
+
 
 
 	function generateTableFromCSV(csvText) {
