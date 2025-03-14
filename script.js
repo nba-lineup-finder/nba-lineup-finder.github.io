@@ -252,8 +252,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 			const lineupData = JSON.parse(lineupResponse);
 
 			const headerElement = document.createElement("p");
-			headerElement.innerHTML = `${lineupData.header} <br> ${lineupData.last_update} <br><br>`;
-			
+			headerElement.innerHTML = `
+			  <h3>${lineupData.header}</h3>
+			  <span style="font-size: 0.8em; color: gray;">${lineupData.last_update}</span>
+			  <br><br>
+			`;
+						
 			// if already have table, remove it
 			const existingHeader = outputDiv.querySelector("p"); // Assuming header is inside a <p> tag
 			const existingTable = outputDiv.querySelector("table"); // Assuming table is inside a <table> tag
@@ -261,8 +265,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 			if (existingTable) existingTable.remove();
 			
 			// Insert the header element and table at the start of outputDiv
-			outputDiv.insertBefore(headerElement, outputDiv.firstChild);
 			outputDiv.insertBefore(generateTableFromCSV(lineupData.csv), outputDiv.firstChild);
+			outputDiv.insertBefore(headerElement, outputDiv.firstChild);
 
 			downloadBtn.style.display = "block";
 
