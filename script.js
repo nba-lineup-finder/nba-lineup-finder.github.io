@@ -317,9 +317,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 		  if (index === nrtgColumnIndex) {
 			const number = parseFloat(cell);
 			if (number >= 0) {
-			  td.style.color = "#AAFF00"; // Positive numbers in green
+			  td.classList.add('positive-nrtg'); // Positive numbers in green
 			} else {
-			  td.style.color = "#E74C3C"; // Negative numbers in red
+			  td.classList.add('negative-nrtg'); // Negative numbers in red
 			}
 		  }
 

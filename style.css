@@ -162,15 +162,15 @@ button:hover {
     opacity: 1;
 }
 
-/* Styling for the positive and negative numbers in the 'NRTG' column */
-.number-positive {
-    color: #AAFF00; /* Bright Green */
+/* Soft Green for positive values */
+.positive-nrtg {
+    color: #6CCF76; /* Soft green */
 }
 
-.number-negative {
-    color: #E74C3C; /* Soft Red */
+/* Soft Red for negative values */
+.negative-nrtg {
+    color: #FF6F61; /* Soft red */
 }
-
 
 /* Container for the links in the top-right corner */
 .links-container {
