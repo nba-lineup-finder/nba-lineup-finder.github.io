@@ -253,6 +253,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 			const headerElement = document.createElement("p");
 			headerElement.innerHTML = `${lineupData.header} <br> ${lineupData.last_update} <br><br>`;
+			
+			// if already have table, remove it
+			const existingHeader = outputDiv.querySelector("p"); // Assuming header is inside a <p> tag
+			const existingTable = outputDiv.querySelector("table"); // Assuming table is inside a <table> tag
+			if (existingHeader) existingHeader.remove();
+			if (existingTable) existingTable.remove();
+			
 			outputDiv.appendChild(headerElement);
 			outputDiv.appendChild(generateTableFromCSV(lineupData.csv));
 			downloadBtn.style.display = "block";
