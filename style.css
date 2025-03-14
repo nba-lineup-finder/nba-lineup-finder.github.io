@@ -164,7 +164,7 @@ button:hover {
 
 /* Styling for the positive and negative numbers in the 'NRTG' column */
 .number-positive {
-    color: #28a745; /* Soft Green */
+    color: #2ecc71; /* Bright Green */
 }
 
 .number-negative {
