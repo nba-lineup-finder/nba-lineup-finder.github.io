@@ -96,14 +96,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
 
             populatePlayerOptions(players.players);
-			const currentTeam = "";
-            if (teamName !== currentTeam) {
-				selectedIncludedDiv.innerHTML = "";
-				selectedExcludedDiv.innerHTML = "";
-				includedPlayers.clear();
-				excludedPlayers.clear();
-				currentTeam = teamName;
-			}
+			selectedIncludedDiv.innerHTML = "";
+			selectedExcludedDiv.innerHTML = "";
+			includedPlayers.clear();
+			excludedPlayers.clear();
 	
             minMinutesInput.style.display = "inline-block";
             minMinutesLabel.style.display = "inline-block";
