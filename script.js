@@ -96,6 +96,12 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
 
             populatePlayerOptions(players.players);
+			const existingHeader = outputDiv.querySelector("p"); // Assuming header is inside a <p> tag
+			const existingTable = outputDiv.querySelector("table"); // Assuming table is inside a <table> tag
+			const existingPagination = outputDiv.querySelector(".pagination"); // For pagination controls
+			if (existingHeader) existingHeader.remove();
+			if (existingTable) existingTable.remove();
+			if (existingPagination) existingPagination.remove();
 			selectedIncludedDiv.innerHTML = "";
 			selectedExcludedDiv.innerHTML = "";
 			includedPlayers.clear();
