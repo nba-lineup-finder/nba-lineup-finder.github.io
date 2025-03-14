@@ -96,11 +96,14 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
 
             populatePlayerOptions(players.players);
-            selectedIncludedDiv.innerHTML = "";
-            selectedExcludedDiv.innerHTML = "";
-            includedPlayers.clear();
-            excludedPlayers.clear();
-
+            if (teamName !== currentTeam) {
+				selectedIncludedDiv.innerHTML = "";
+				selectedExcludedDiv.innerHTML = "";
+				includedPlayers.clear();
+				excludedPlayers.clear();
+				currentTeam = teamName;
+			}
+	
             minMinutesInput.style.display = "inline-block";
             minMinutesLabel.style.display = "inline-block";
             findLineupsBtn.style.display = "inline-block";
@@ -226,14 +229,16 @@ document.addEventListener("DOMContentLoaded", async function () {
 		const downloadBtn = document.getElementById("downloadBtn");
 
 		try {
-			// Clear previous output but keep the div visible
-			outputDiv.innerHTML = "";
 			outputDiv.style.display = "block";
 			downloadBtn.style.display = "none";
 
 			// Show loading indicator & disable button
 			findLineupsBtn.disabled = true;
 			loadingIndicator.style.display = "block";
+			
+			minMinutesInput.style.display = "inline-block";
+			minMinutesLabel.style.display = "inline-block";	
+			findLineupsBtn.style.display = "inline-block";
 
 			const findLineupsURL = "https://5ybwp5gdkf.execute-api.us-east-2.amazonaws.com/test"; 
 			const response = await fetch(findLineupsURL, {
