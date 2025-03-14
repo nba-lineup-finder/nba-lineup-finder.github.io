@@ -254,16 +254,16 @@ document.addEventListener("DOMContentLoaded", async function () {
 			const headerElement = document.createElement("p");
 			headerElement.innerHTML = `${lineupData.header} <br> ${lineupData.last_update} <br><br>`;
 			
-			console.log(lineupData.csv)
-			
 			// if already have table, remove it
 			const existingHeader = outputDiv.querySelector("p"); // Assuming header is inside a <p> tag
 			const existingTable = outputDiv.querySelector("table"); // Assuming table is inside a <table> tag
 			if (existingHeader) existingHeader.remove();
 			if (existingTable) existingTable.remove();
 			
-			outputDiv.appendChild(headerElement);
-			outputDiv.appendChild(generateTableFromCSV(lineupData.csv));
+			// Insert the header element and table at the start of outputDiv
+			outputDiv.insertBefore(headerElement, outputDiv.firstChild);
+			outputDiv.insertBefore(generateTableFromCSV(lineupData.csv), outputDiv.firstChild);
+
 			downloadBtn.style.display = "block";
 
 			// Store CSV data for download
