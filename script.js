@@ -258,8 +258,17 @@ document.addEventListener("DOMContentLoaded", async function () {
 		const lineupData = JSON.parse(lineupResponse);
 
 		const headerElement = document.createElement("p");
+		let ratingClass = "";
+		if (lineupData.net_rating > 0) {
+			ratingClass = "positive-nrtg";
+		} else if (lineupData.net_rating < 0) {
+			ratingClass = "negative-nrtg";
+		}
+
 		headerElement.innerHTML = `
-		  <h3>${lineupData.header}</h3>
+		  <h3>
+			${lineupData.header} <span class="${ratingClass}">${lineupData.net_rating}</span>
+		  </h3>
 		  <span style="font-size: 0.8em; color: gray;">${lineupData.last_update}</span>
 		  <br><br>
 		`;
