@@ -324,15 +324,30 @@ document.addEventListener("DOMContentLoaded", async function () {
 		  return table;
 		}
 
-		// Function to render the current page
+		// Function to render the current page, replacing content of current table -- no removing
 		function renderPage(page) {
-		  const start = (page - 1) * rowsPerPage + 1;
-		  const end = Math.min(start + rowsPerPage - 1, rows.length - 1);
+			const start = (page - 1) * rowsPerPage + 1;
+			const end = Math.min(start + rowsPerPage - 1, rows.length - 1);
+			const rowsToDisplay = rows.slice(start, end + 1);
+			
+			// Check if a table already exists in outputDiv
+			let existingTable = outputDiv.querySelector("table");
+			
+			if (!existingTable) {
+				// If no existing table, create a new one
+				existingTable = document.createElement("table");
+				outputDiv.appendChild(existingTable);
+			}
 
-		  const rowsToDisplay = rows.slice(start, end + 1);
-		  const table = createTable(rowsToDisplay);
-		  outputDiv.appendChild(table);
+			// Clear and update the existing table
+			existingTable.innerHTML = ""; // Clears previous content
+			const newTable = createTable(rowsToDisplay);
+			
+			// Move all new table rows to the existing table
+			existingTable.appendChild(newTable.tHead); // Add header
+			existingTable.appendChild(newTable.tBodies[0]); // Add body
 		}
+
 
 		// Function to create pagination controls
 		function createPaginationControls() {

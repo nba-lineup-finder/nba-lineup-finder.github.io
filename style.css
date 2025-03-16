@@ -192,3 +192,49 @@ button:hover {
     text-decoration: underline; /* Underline on hover */
     color: #0056b3; /* Darker blue on hover */
 }
+
+
+/* General table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #1e1e1e; /* Dark background */
+    color: #e0e0e0; /* Light text for readability */
+    border-radius: 8px;
+    overflow: hidden; /* Ensures border-radius is applied */
+}
+
+/* Table headers */
+th {
+    background-color: #161616; /* Slightly darker than table background */
+    color: #ffffff;
+    padding: 12px;
+    text-align: left;
+    font-weight: bold;
+}
+
+/* Table rows */
+td {
+    padding: 12px;
+    border-bottom: 1px solid #333; /* Subtle row dividers */
+}
+
+/* Alternate row shading for readability */
+tr:nth-child(even) {
+    background-color: #252525; /* Slightly lighter than table background */
+}
+
+/* Hover effect for rows */
+tr:hover {
+    background-color: #2d2d2d;
+}
+
+/* Style for first and last cell to have rounded corners */
+th:first-child, td:first-child {
+    border-radius: 8px 0 0 8px;
+}
+
+th:last-child, td:last-child {
+    border-radius: 0 8px 8px 0;
+}
+
