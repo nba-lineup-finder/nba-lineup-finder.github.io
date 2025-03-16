@@ -386,14 +386,23 @@ document.addEventListener("DOMContentLoaded", async function () {
 		downloadBtn.onclick = () => downloadCSV(lineupData.csv);
 
 	  } catch (error) {
-		console.error("Error fetching data:", error);
-
-		// Show error message in output div, but don't hide the button
-		outputDiv.innerHTML = `
+		console.error("Error fetching data:", error);'
+		
+		headerElement.innerHTML = `
 		  <p style="color: red; font-weight: bold;">⚠️ Error: ${error.message}</p>
 		  <p>Please try again or check your selections.</p>
 		`;
-		outputDiv.style.display = "block";
+
+		// if already have table, remove it
+		const existingHeader = outputDiv.querySelector("p"); // Assuming header is inside a <p> tag
+		const existingTable = outputDiv.querySelector("table"); // Assuming table is inside a <table> tag
+		const existingPagination = outputDiv.querySelector(".pagination"); // For pagination controls
+		if (existingHeader) existingHeader.remove();
+		if (existingTable) existingTable.remove();
+		if (existingPagination) existingPagination.remove();
+
+		// Insert the header element at the start of outputDiv
+		outputDiv.insertBefore(headerElement, outputDiv.firstChild);
 
 		// Ensure button and div are still visible
 		findLineupsBtn.disabled = false;
