@@ -275,11 +275,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 		headerElement.innerHTML = `
 		  <h3>
-			${lineupData.header} <span class="${ratingClass}">${lineupData.net_rating}</span>
+			${lineupData.header || "No Data"} 
+			<span class="${ratingClass}">${lineupData.net_rating ?? "N/A"}</span>
 		  </h3>
-		  <span style="font-size: 0.8em; color: gray;">${lineupData.last_update}</span>
+		  <span style="font-size: 0.8em; color: gray;">${lineupData.last_update || "Unknown Date"}</span>
 		  <br><br>
 		`;
+
 
 		// Insert the header element at the start of outputDiv
 		outputDiv.insertBefore(headerElement, outputDiv.firstChild);
