@@ -230,18 +230,26 @@ document.addEventListener("DOMContentLoaded", async function () {
 	  const loadingIndicator = document.getElementById("loadingIndicator");
 	  const outputDiv = document.getElementById("output");
 	  const downloadBtn = document.getElementById("downloadBtn");
+	  
+	  outputDiv.style.display = "block";
+	  downloadBtn.style.display = "none";
+
+	  // Show loading indicator & disable button
+	  findLineupsBtn.disabled = true;
+	  loadingIndicator.style.display = "block";
+
+	  minMinutesInput.style.display = "inline-block";
+	  minMinutesLabel.style.display = "inline-block";	
+	  findLineupsBtn.style.display = "inline-block";
+	  // if already have table, remove it
+	  const existingHeader = outputDiv.querySelector("p"); // Assuming header is inside a <p> tag
+	  const existingTable = outputDiv.querySelector("table"); // Assuming table is inside a <table> tag
+	  const existingPagination = outputDiv.querySelector(".pagination"); // For pagination controls
+	  if (existingHeader) existingHeader.remove();
+	  if (existingTable) existingTable.remove();
+	  if (existingPagination) existingPagination.remove();
 
 	  try {
-		outputDiv.style.display = "block";
-		downloadBtn.style.display = "none";
-
-		// Show loading indicator & disable button
-		findLineupsBtn.disabled = true;
-		loadingIndicator.style.display = "block";
-
-		minMinutesInput.style.display = "inline-block";
-		minMinutesLabel.style.display = "inline-block";	
-		findLineupsBtn.style.display = "inline-block";
 
 		const findLineupsURL = "https://5ybwp5gdkf.execute-api.us-east-2.amazonaws.com/test"; 
 		const response = await fetch(findLineupsURL, {
@@ -272,14 +280,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 		  <span style="font-size: 0.8em; color: gray;">${lineupData.last_update}</span>
 		  <br><br>
 		`;
-
-		// if already have table, remove it
-		const existingHeader = outputDiv.querySelector("p"); // Assuming header is inside a <p> tag
-		const existingTable = outputDiv.querySelector("table"); // Assuming table is inside a <table> tag
-		const existingPagination = outputDiv.querySelector(".pagination"); // For pagination controls
-		if (existingHeader) existingHeader.remove();
-		if (existingTable) existingTable.remove();
-		if (existingPagination) existingPagination.remove();
 
 		// Insert the header element at the start of outputDiv
 		outputDiv.insertBefore(headerElement, outputDiv.firstChild);
@@ -408,15 +408,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 		  <p style="color: red; font-weight: bold;">⚠️ Error: ${error.message}</p>
 		  <p>Please try again or check your selections.</p>
 		`;
-
-		// if already have table, remove it
-		const existingHeader = outputDiv.querySelector("p"); // Assuming header is inside a <p> tag
-		const existingTable = outputDiv.querySelector("table"); // Assuming table is inside a <table> tag
-		const existingPagination = outputDiv.querySelector(".pagination"); // For pagination controls
-		if (existingHeader) existingHeader.remove();
-		if (existingTable) existingTable.remove();
-		if (existingPagination) existingPagination.remove();
-
 		// Insert the header element at the start of outputDiv
 		outputDiv.insertBefore(headerElement, outputDiv.firstChild);
 
