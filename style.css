@@ -242,3 +242,35 @@ th:last-child, td:last-child {
     border-radius: 0 8px 8px 0;
 }
 
+
+/* General pagination button styles */
+.pagination button {
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 1px solid #007bff; /* Blue border */
+    border-radius: 5px;
+    background-color: #007bff; /* Blue background */
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0 5px; /* Add spacing between buttons */
+}
+
+/* Hover effect */
+.pagination button:hover {
+    background-color: #0056b3; /* Darker blue */
+    border-color: #0056b3;
+}
+
+/* Disabled state */
+.pagination button:disabled {
+    background-color: #555; /* Gray background */
+    border-color: #555;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
