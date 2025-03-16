@@ -9,9 +9,9 @@ body {
 
 .container {
     width: 90%;
-    max-width: 600px;
+    max-width: 1200px;
     margin: auto;
-    padding: 20px;
+    padding: 30px;
     border: 1px solid #333;
     border-radius: 8px;
     box-shadow: 2px 2px 12px rgba(255, 255, 255, 0.1);
@@ -208,14 +208,18 @@ table {
 th {
     background-color: #161616; /* Slightly darker than table background */
     color: #ffffff;
-    padding: 12px;
+    padding: 14px;
     text-align: left;
     font-weight: bold;
+	width: 100%;
+    max-width: 100%;
+    border-spacing: 0;
+	font-size: 16px;
 }
 
 /* Table rows */
 td {
-    padding: 12px;
+    padding: 14px;
     border-bottom: 1px solid #333; /* Subtle row dividers */
 }
 
