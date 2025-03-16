@@ -387,7 +387,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 	  } catch (error) {
 		console.error("Error fetching data:", error);
-		
+		console.log(lineupData);
+		const headerElement = document.createElement("p");
 		headerElement.innerHTML = `
 		  <p style="color: red; font-weight: bold;">⚠️ Error: ${error.message}</p>
 		  <p>Please try again or check your selections.</p>
