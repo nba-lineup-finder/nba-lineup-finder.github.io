@@ -386,7 +386,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		downloadBtn.onclick = () => downloadCSV(lineupData.csv);
 
 	  } catch (error) {
-		console.error("Error fetching data:", error);'
+		console.error("Error fetching data:", error);
 		
 		headerElement.innerHTML = `
 		  <p style="color: red; font-weight: bold;">⚠️ Error: ${error.message}</p>
