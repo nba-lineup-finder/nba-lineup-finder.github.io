@@ -254,7 +254,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 	  if (existingPagination) existingPagination.remove();
 
 	  try {
-
 		const findLineupsURL = "https://5ybwp5gdkf.execute-api.us-east-2.amazonaws.com/test"; 
 		const response = await fetch(findLineupsURL, {
 		  method: "POST",
@@ -272,9 +271,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 		const headerElement = document.createElement("p");
 		let ratingClass = "";
 		if (lineupData.net_rating > 0) {
-			ratingClass = "positive-nrtg";
+		  ratingClass = "positive-nrtg";
 		} else if (lineupData.net_rating < 0) {
-			ratingClass = "negative-nrtg";
+		  ratingClass = "negative-nrtg";
 		}
 
 		// Pagination variables
@@ -319,28 +318,27 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 		// Function to render the current page, replacing content of current table -- no removing
 		function renderPage(page) {
-			const start = (page - 1) * rowsPerPage + 1;
-			const end = Math.min(start + rowsPerPage - 1, rows.length - 1);
-			const rowsToDisplay = rows.slice(start, end + 1);
-			
-			// Check if a table already exists in outputDiv
-			let existingTable = outputDiv.querySelector("table");
-			
-			if (!existingTable) {
-				// If no existing table, create a new one
-				existingTable = document.createElement("table");
-				outputDiv.insertBefore(existingTable, outputDiv.firstChild);
-			}
+		  const start = (page - 1) * rowsPerPage + 1;
+		  const end = Math.min(start + rowsPerPage - 1, rows.length - 1);
+		  const rowsToDisplay = rows.slice(start, end + 1);
+		  
+		  // Check if a table already exists in outputDiv
+		  let existingTable = outputDiv.querySelector("table");
+		  
+		  if (!existingTable) {
+			// If no existing table, create a new one
+			existingTable = document.createElement("table");
+			outputDiv.insertBefore(existingTable, outputDiv.firstChild);
+		  }
 
-			// Clear and update the existing table
-			existingTable.innerHTML = ""; // Clears previous content
-			const newTable = createTable(rowsToDisplay);
-			
-			// Move all new table rows to the existing table
-			existingTable.appendChild(newTable.tHead); // Add header
-			existingTable.appendChild(newTable.tBodies[0]); // Add body
+		  // Clear and update the existing table
+		  existingTable.innerHTML = ""; // Clears previous content
+		  const newTable = createTable(rowsToDisplay);
+		  
+		  // Move all new table rows to the existing table
+		  existingTable.appendChild(newTable.tHead); // Add header
+		  existingTable.appendChild(newTable.tBodies[0]); // Add body
 		}
-
 
 		// Function to create pagination controls
 		function createPaginationControls() {
@@ -349,35 +347,37 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 		  const totalPages = Math.ceil((rows.length - 1) / rowsPerPage);
 
-		// Previous button
-		if (currentPage > 1) {
-		  const prevButton = document.createElement('button');
-		  prevButton.textContent = 'Prev';
-		  prevButton.addEventListener('click', () => {
-			currentPage--;
-			renderPage(currentPage); // Render the previous page
-			createPaginationControls(); // Re-create pagination controls
-		  });
-		  paginationDiv.appendChild(prevButton);
+		  // Previous button
+		  if (currentPage > 1) {
+			const prevButton = document.createElement('button');
+			prevButton.textContent = 'Prev';
+			prevButton.addEventListener('click', () => {
+			  currentPage--;
+			  renderPage(currentPage); // Render the previous page
+			  createPaginationControls(); // Re-create pagination controls
+			});
+			paginationDiv.appendChild(prevButton);
+		  }
+
+		  // Page number
+		  const pageNumber = document.createElement('span');
+		  pageNumber.textContent = ` Page ${currentPage} of ${totalPages} `;
+		  paginationDiv.appendChild(pageNumber);
+
+		  // Next button
+		  if (currentPage < totalPages) {
+			const nextButton = document.createElement('button');
+			nextButton.textContent = 'Next';
+			nextButton.addEventListener('click', () => {
+			  currentPage++;
+			  renderPage(currentPage); // Render the next page
+			  createPaginationControls(); // Re-create pagination controls
+			});
+			paginationDiv.appendChild(nextButton);
+		  }
+
+		  outputDiv.appendChild(paginationDiv);
 		}
-
-		// Page number
-		const pageNumber = document.createElement('span');
-		pageNumber.textContent = ` Page ${currentPage} of ${totalPages} `;
-		paginationDiv.appendChild(pageNumber);
-
-		// Next button
-		if (currentPage < totalPages) {
-		  const nextButton = document.createElement('button');
-		  nextButton.textContent = 'Next';
-		  nextButton.addEventListener('click', () => {
-			currentPage++;
-			renderPage(currentPage); // Render the next page
-			createPaginationControls(); // Re-create pagination controls
-		  });
-		  paginationDiv.appendChild(nextButton);
-		}
-
 
 		// Render the first page and pagination controls
 		renderPage(currentPage);
@@ -386,8 +386,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		// Show download button and handle download
 		downloadBtn.style.display = "block";
 		downloadBtn.onclick = () => downloadCSV(lineupData.csv);
-		
-		
+
 		headerElement.innerHTML = `
 		  <h3>
 			${lineupData.header || "No Data"} 
@@ -396,7 +395,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 		  <span style="font-size: 0.8em; color: gray;">${lineupData.last_update || "Unknown Date"}</span>
 		  <br><br>
 		`;
-
 
 		// Insert the header element at the start of outputDiv
 		outputDiv.insertBefore(headerElement, outputDiv.firstChild);
@@ -420,6 +418,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		loadingIndicator.style.display = "none";
 	  }
 	});
+
 
 
 
