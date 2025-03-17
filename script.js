@@ -344,6 +344,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 		function createPaginationControls() {
 		  const paginationDiv = document.createElement("div");
 		  paginationDiv.classList.add("pagination");
+		  // Clear any existing content in the paginationDiv
+		  paginationDiv.innerHTML = ""; // Clear the content
 
 		  const totalPages = Math.ceil((rows.length - 1) / rowsPerPage);
 
@@ -354,7 +356,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 			prevButton.addEventListener('click', () => {
 			  currentPage--;
 			  renderPage(currentPage); // Render the previous page
-			  // createPaginationControls(); // Re-create pagination controls
+			  createPaginationControls(); // Re-create pagination controls
 			});
 			paginationDiv.appendChild(prevButton);
 		  }
@@ -371,7 +373,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 			nextButton.addEventListener('click', () => {
 			  currentPage++;
 			  renderPage(currentPage); // Render the next page
-			  // createPaginationControls(); // Re-create pagination controls
+			  createPaginationControls(); // Re-create pagination controls
 			});
 			paginationDiv.appendChild(nextButton);
 		  }
