@@ -55,16 +55,25 @@ button {
     padding: 10px;
     font-size: 16px;
     margin-top: 10px;
-    border: none;
+    border: 1px solid #555; /* Grey border */
     border-radius: 5px;
-    background-color: #007bff;
-    color: white;
+    background-color: #333; /* Dark grey background */
+    color: #e0e0e0; /* Light text for readability */
     cursor: pointer;
     transition: background 0.3s ease;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #444; /* Slightly lighter grey on hover */
+    border-color: #444; /* Lighter grey border */
+}
+
+/* Disabled state */
+button:disabled {
+    background-color: #666; /* Medium grey for disabled */
+    border-color: #666; /* Same grey for border */
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 /* Centering Find Lineups Button */
@@ -114,7 +123,7 @@ button:hover {
 
 /* Remove Player Button */
 .remove-player {
-    background: red;
+    background: #b30000; /* Dark red for contrast */
     color: white;
     border: none;
     cursor: pointer;
@@ -131,19 +140,14 @@ button:hover {
 }
 
 .remove-player:hover {
-    background: darkred;
+    background: #8b0000; /* Darker red on hover */
 }
 
-.tooltip {
-    position: relative;
-    display: inline-block;
-    font-size: 12px;
-}
-
+/* Tooltip styling */
 .tooltip .tooltip-text {
     visibility: hidden;
     width: 150px;
-    background-color: black;
+    background-color: #333; /* Dark background for tooltip */
     color: #fff;
     text-align: center;
     padding: 5px;
@@ -173,14 +177,13 @@ button:hover {
 
 /* Style for individual links */
 .links-container .link {
-    color: #007bff; /* Blue for links */
+    color: #a1c4fd; /* Soft blue for links */
     text-decoration: none;
-    margin: 0 5px;
 }
 
 .links-container .link:hover {
-    text-decoration: underline; /* Underline on hover */
-    color: #0056b3; /* Darker blue on hover */
+    text-decoration: underline;
+    color: #68a1f7; /* Lighter blue for hover */
 }
 
 
@@ -204,7 +207,6 @@ th {
     max-width: 100%;
     border-spacing: 0;
 	font-size: 16px;
-	
 }
 
 /* Table rows */
@@ -235,35 +237,38 @@ th:last-child, td:last-child {
 
 /* General pagination button styles */
 .pagination button {
-    padding: 10px 15px;
-    font-size: 16px;
-    border: 1px solid #007bff; /* Blue border */
+    padding: 5px 10px; /* Smaller padding */
+    font-size: 12px; /* Smaller font size */
+    border: 1px solid #555; /* Grey border */
     border-radius: 5px;
-    background-color: #007bff; /* Blue background */
-    color: white;
+    background-color: #333; /* Dark grey background */
+    color: #e0e0e0; /* Light text for readability */
     cursor: pointer;
     transition: all 0.3s ease;
-    margin: 0 5px; /* Add spacing between buttons */
+    margin: 0 5px; /* Keep spacing between buttons */
 }
 
 /* Hover effect */
 .pagination button:hover {
-    background-color: #0056b3; /* Darker blue */
-    border-color: #0056b3;
+    background-color: #444; /* Slightly lighter grey on hover */
+    border-color: #444; /* Lighter grey border */
 }
 
 /* Disabled state */
 .pagination button:disabled {
-    background-color: #555; /* Gray background */
-    border-color: #555;
+    background-color: #666; /* Medium grey for disabled */
+    border-color: #666; /* Same grey for border */
     cursor: not-allowed;
     opacity: 0.6;
 }
 
 .pagination {
-    text-align: center;
+    text-align: right; /* Right-align the container */
     margin-top: 20px;
+    position: relative; /* Necessary for positioning the pagination buttons */
+    right: 0; /* Align to the right side of the container */
 }
+
 
 /* Soft Green for positive values */
 .positive-nrtg {
@@ -284,4 +289,3 @@ table .positive-nrtg {
 table .negative-nrtg {
     color: #FF6F61; /* Soft red */
 }
-
