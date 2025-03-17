@@ -310,7 +310,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 			  td.textContent = cell; // Using textContent to avoid XSS vulnerabilities
 
 			  // Check if this is the "NRTG" column and style the cell accordingly
-			  if (index === nrtgColumnIndex) {
+			  if (index === row.length - 1) {
 				const number = parseFloat(cell);
 				if (number >= 0) {
 				  td.classList.add('positive-nrtg'); // Positive numbers in green
