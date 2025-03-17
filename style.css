@@ -192,7 +192,7 @@ table {
     color: #e0e0e0; /* Light text for readability */
     border-radius: 8px;
     overflow: hidden; /* Ensures border-radius is applied */
-    height: 300px; /* Set fixed height (adjust as needed) */
+    height: 450px; /* Set fixed height (adjust as needed) */
     display: block; /* Necessary for overflow to work */
 }
 
@@ -200,7 +200,7 @@ table {
 tbody {
     display: block;
     overflow-y: auto; /* Adds a vertical scrollbar if content overflows */
-    max-height: 300px; /* Max height for tbody content */
+    max-height: 400px; /* Max height for tbody content */
 }
 
 /* Table headers */
