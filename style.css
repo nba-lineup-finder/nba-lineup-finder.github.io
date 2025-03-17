@@ -235,7 +235,22 @@ th:last-child, td:last-child {
 }
 
 
+/* Ensure the container of the table has relative positioning */
+.table-container {
+    position: relative;
+    margin-bottom: 50px; /* Add space for pagination controls */
+}
+
 /* General pagination button styles */
+.pagination {
+    position: absolute; /* Absolute positioning */
+    bottom: 0; /* Stick it to the bottom of the table */
+    right: 0; /* Align the pagination to the right */
+    text-align: right;
+    width: 100%; /* Ensure it spans the entire table */
+    margin-top: 20px; /* Margin at the top for some spacing */
+}
+
 .pagination button {
     padding: 5px 10px; /* Smaller padding */
     font-size: 12px; /* Smaller font size */
@@ -262,12 +277,6 @@ th:last-child, td:last-child {
     opacity: 0.6;
 }
 
-.pagination {
-    text-align: right; /* Right-align the container */
-    margin-top: 20px;
-    position: relative; /* Necessary for positioning the pagination buttons */
-    right: 0; /* Align to the right side of the container */
-}
 
 
 /* Soft Green for positive values */
