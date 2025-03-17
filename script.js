@@ -242,10 +242,14 @@ document.addEventListener("DOMContentLoaded", async function () {
 	  minMinutesLabel.style.display = "inline-block";	
 	  findLineupsBtn.style.display = "inline-block";
 	  // if already have table, remove it
-	  const existingHeader = outputDiv.querySelector("p"); // Assuming header is inside a <p> tag
-	  const existingTable = outputDiv.querySelector("table"); // Assuming table is inside a <table> tag
-	  const existingPagination = outputDiv.querySelector(".pagination"); // For pagination controls
-	  if (existingHeader) existingHeader.remove();
+	  const existingHeaders = outputDiv.querySelectorAll("p"); // Get all <p> elements
+	  const existingTable = outputDiv.querySelector("table"); // Get table
+	  const existingPagination = outputDiv.querySelector(".pagination"); // Get pagination
+
+	  // Remove all paragraph elements
+	  existingHeaders.forEach(header => header.remove());
+
+	  // Remove table and pagination if they exist
 	  if (existingTable) existingTable.remove();
 	  if (existingPagination) existingPagination.remove();
 
