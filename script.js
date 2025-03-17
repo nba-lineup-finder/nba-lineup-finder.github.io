@@ -277,19 +277,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 			ratingClass = "negative-nrtg";
 		}
 
-		headerElement.innerHTML = `
-		  <h3>
-			${lineupData.header || "No Data"} 
-			<span class="${ratingClass}">${lineupData.net_rating ?? "N/A"}</span>
-		  </h3>
-		  <span style="font-size: 0.8em; color: gray;">${lineupData.last_update || "Unknown Date"}</span>
-		  <br><br>
-		`;
-
-
-		// Insert the header element at the start of outputDiv
-		outputDiv.insertBefore(headerElement, outputDiv.firstChild);
-
 		// Pagination variables
 		const rowsPerPage = 5;
 		let currentPage = 1;
@@ -342,7 +329,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 			if (!existingTable) {
 				// If no existing table, create a new one
 				existingTable = document.createElement("table");
-				outputDiv.appendChild(existingTable);
+				outputDiv.insertBefore(existingTable, outputDiv.firstChild);
 			}
 
 			// Clear and update the existing table
@@ -405,6 +392,20 @@ document.addEventListener("DOMContentLoaded", async function () {
 		// Show download button and handle download
 		downloadBtn.style.display = "block";
 		downloadBtn.onclick = () => downloadCSV(lineupData.csv);
+		
+		
+		headerElement.innerHTML = `
+		  <h3>
+			${lineupData.header || "No Data"} 
+			<span class="${ratingClass}">${lineupData.net_rating ?? "N/A"}</span>
+		  </h3>
+		  <span style="font-size: 0.8em; color: gray;">${lineupData.last_update || "Unknown Date"}</span>
+		  <br><br>
+		`;
+
+
+		// Insert the header element at the start of outputDiv
+		outputDiv.insertBefore(headerElement, outputDiv.firstChild);
 
 	  } catch (error) {
 		console.error("Error fetching data:", error);
