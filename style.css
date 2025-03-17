@@ -162,16 +162,6 @@ button:hover {
     opacity: 1;
 }
 
-/* Soft Green for positive values */
-.positive-nrtg {
-    color: #2ecc71; /* Soft green */
-}
-
-/* Soft Red for negative values */
-.negative-nrtg {
-    color: #FF6F61; /* Soft red */
-}
-
 /* Container for the links in the top-right corner */
 .links-container {
     position: fixed;  /* Fixed positioning to remain visible on scroll */
@@ -284,3 +274,24 @@ th:last-child, td:last-child {
     text-align: center;
     margin-top: 20px;
 }
+
+/* Soft Green for positive values */
+.positive-nrtg {
+    color: #2ecc71; /* Soft green */
+}
+
+/* Soft Red for negative values */
+.negative-nrtg {
+    color: #FF6F61; /* Soft red */
+}
+
+/* Soft Green for positive values in table */
+table .positive-nrtg {
+    color: #2ecc71; /* Soft green */
+}
+
+/* Soft Red for negative values in table */
+table .negative-nrtg {
+    color: #FF6F61; /* Soft red */
+}
+
