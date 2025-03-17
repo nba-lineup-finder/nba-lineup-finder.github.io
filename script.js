@@ -368,7 +368,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		  // Previous button
 		  if (currentPage > 1) {
 			const prevButton = document.createElement('button');
-			prevButton.textContent = 'Prev';
+			prevButton.textContent = '←';
 			prevButton.addEventListener('click', () => {
 			  currentPage--;
 			  renderPage(currentPage); // Render the previous page
@@ -385,7 +385,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		  // Next button
 		  if (currentPage < totalPages) {
 			const nextButton = document.createElement('button');
-			nextButton.textContent = 'Next';
+			nextButton.textContent = '→';
 			nextButton.addEventListener('click', () => {
 			  currentPage++;
 			  renderPage(currentPage); // Render the next page

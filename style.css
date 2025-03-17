@@ -241,19 +241,25 @@ th:last-child, td:last-child {
     margin-bottom: 50px; /* Add space for pagination controls */
 }
 
-/* General pagination button styles */
+//* General pagination button styles */
 .pagination {
-    position: absolute; /* Absolute positioning */
-    bottom: 0; /* Stick it to the bottom of the table */
-    right: 0; /* Align the pagination to the right */
-    text-align: right;
-    width: 100%; /* Ensure it spans the entire table */
-    margin-top: 20px; /* Margin at the top for some spacing */
+    display: flex;
+    justify-content: flex-end; /* Align the entire pagination to the right */
+    align-items: center;
+    margin-top: 20px;
 }
 
+/* Pagination info (page x of y) */
+.pagination-info {
+    font-size: 14px;
+    color: #e0e0e0; /* Light text */
+    margin-right: 15px; /* Add spacing between the info and buttons */
+}
+
+/* General pagination button styles */
 .pagination button {
-    padding: 5px 10px; /* Smaller padding */
-    font-size: 12px; /* Smaller font size */
+    padding: 5px 8px; /* Smaller padding */
+    font-size: 14px; /* Smaller font size */
     border: 1px solid #555; /* Grey border */
     border-radius: 5px;
     background-color: #333; /* Dark grey background */
@@ -263,7 +269,7 @@ th:last-child, td:last-child {
     margin: 0 5px; /* Keep spacing between buttons */
 }
 
-/* Hover effect */
+/* Hover effect for buttons */
 .pagination button:hover {
     background-color: #444; /* Slightly lighter grey on hover */
     border-color: #444; /* Lighter grey border */
@@ -275,6 +281,20 @@ th:last-child, td:last-child {
     border-color: #666; /* Same grey for border */
     cursor: not-allowed;
     opacity: 0.6;
+}
+
+/* Styling for the arrow buttons */
+.pagination .arrow {
+    font-size: 18px; /* Bigger arrow size */
+}
+
+/* Remove text and keep arrows */
+.pagination button.previous {
+    content: "←"; /* Left arrow */
+}
+
+.pagination button.next {
+    content: "→"; /* Right arrow */
 }
 
 
