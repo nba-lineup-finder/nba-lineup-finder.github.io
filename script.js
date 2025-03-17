@@ -106,6 +106,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 			selectedExcludedDiv.innerHTML = "";
 			includedPlayers.clear();
 			excludedPlayers.clear();
+			downloadBtn.style.display = "none";
 	
             minMinutesInput.style.display = "inline-block";
             minMinutesLabel.style.display = "inline-block";
