@@ -144,6 +144,10 @@ button:disabled {
 }
 
 /* Tooltip styling */
+.tooltip {
+    position: relative; /* Make sure the tooltip is positioned relative to its parent */
+}
+
 .tooltip .tooltip-text {
     visibility: hidden;
     width: 150px;
@@ -158,12 +162,13 @@ button:disabled {
     left: 50%;
     transform: translateX(-50%);
     opacity: 0;
-    transition: opacity 0.3s;
+    transition: opacity 0.3s, visibility 0s 0.3s; /* Added visibility transition */
 }
 
 .tooltip:hover .tooltip-text {
     visibility: visible;
     opacity: 1;
+    transition: opacity 0.3s, visibility 0s 0s; /* Make visibility change immediately */
 }
 
 /* Container for the links in the top-right corner */
