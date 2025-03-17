@@ -375,8 +375,14 @@ document.addEventListener("DOMContentLoaded", async function () {
 			});
 			paginationDiv.appendChild(nextButton);
 		  }
-
-		  outputDiv.appendChild(paginationDiv);
+		  const table = outputDiv.querySelector("table"); // Get the table element
+		  
+		  if (table && table.nextElementSibling) {
+			outputDiv.insertBefore(paginationDiv, table.nextElementSibling);
+		  } else {
+			  // If no next sibling, append it at the end
+			  outputDiv.appendChild(paginationDiv);
+		  }
 		}
 
 		// Render the first page and pagination controls
