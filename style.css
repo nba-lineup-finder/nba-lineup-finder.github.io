@@ -241,11 +241,12 @@ th:last-child, td:last-child {
     margin-bottom: 50px; /* Add space for pagination controls */
 }
 
-//* General pagination button styles */
+/* Ensures that the pagination container does not stretch too much */
 .pagination {
     display: flex;
-    justify-content: flex-end; /* Align the entire pagination to the right */
     align-items: center;
+    justify-content: flex-end; /* Right-align the pagination controls */
+    gap: 10px; /* Gap between pagination items */
     margin-top: 20px;
 }
 
@@ -258,7 +259,7 @@ th:last-child, td:last-child {
 
 /* General pagination button styles */
 .pagination button {
-    padding: 5px 8px; /* Smaller padding */
+    padding: 5px 10px; /* Smaller padding */
     font-size: 14px; /* Smaller font size */
     border: 1px solid #555; /* Grey border */
     border-radius: 5px;
@@ -267,6 +268,8 @@ th:last-child, td:last-child {
     cursor: pointer;
     transition: all 0.3s ease;
     margin: 0 5px; /* Keep spacing between buttons */
+    width: auto; /* Let the width adjust based on content */
+    height: auto; /* Let height adjust to content */
 }
 
 /* Hover effect for buttons */
