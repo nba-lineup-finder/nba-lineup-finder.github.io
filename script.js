@@ -305,9 +305,20 @@ document.addEventListener("DOMContentLoaded", async function () {
 		  const tbody = document.createElement("tbody");
 		  rowsToDisplay.forEach(row => {
 			const tr = document.createElement("tr");
-			row.forEach(cell => {
+			row.forEach((cell, index) => {
 			  const td = document.createElement("td");
 			  td.textContent = cell; // Using textContent to avoid XSS vulnerabilities
+
+			  // Check if this is the "NRTG" column and style the cell accordingly
+			  if (index === nrtgColumnIndex) {
+				const number = parseFloat(cell);
+				if (number >= 0) {
+				  td.classList.add('positive-nrtg'); // Positive numbers in green
+				} else {
+				  td.classList.add('negative-nrtg'); // Negative numbers in red
+				}
+			  }
+
 			  tr.appendChild(td);
 			});
 			tbody.appendChild(tr);
@@ -315,6 +326,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		  table.appendChild(tbody);
 		  return table;
 		}
+
 
 		// Function to render the current page, replacing content of current table -- no removing
 		function renderPage(page) {
