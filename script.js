@@ -349,41 +349,35 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 		  const totalPages = Math.ceil((rows.length - 1) / rowsPerPage);
 
-		  // Previous button
-		  if (currentPage > 1) {
-			const prevButton = document.createElement('button');
-			prevButton.textContent = 'Prev';
-			prevButton.addEventListener('click', () => {
-			  currentPage--;
-			  outputDiv.innerHTML = ''; // Clear current content
-			  outputDiv.appendChild(headerElement); // Re-add header
-			  renderPage(currentPage);
-			  createPaginationControls(); // Re-create pagination controls
-			});
-			paginationDiv.appendChild(prevButton);
-		  }
-
-		  // Page number
-		  const pageNumber = document.createElement('span');
-		  pageNumber.textContent = ` Page ${currentPage} of ${totalPages} `;
-		  paginationDiv.appendChild(pageNumber);
-
-		  // Next button
-		  if (currentPage < totalPages) {
-			const nextButton = document.createElement('button');
-			nextButton.textContent = 'Next';
-			nextButton.addEventListener('click', () => {
-			  currentPage++;
-			  outputDiv.innerHTML = ''; // Clear current content
-			  outputDiv.appendChild(headerElement); // Re-add header
-			  renderPage(currentPage);
-			  createPaginationControls(); // Re-create pagination controls
-			});
-			paginationDiv.appendChild(nextButton);
-		  }
-
-		  outputDiv.appendChild(paginationDiv);
+		// Previous button
+		if (currentPage > 1) {
+		  const prevButton = document.createElement('button');
+		  prevButton.textContent = 'Prev';
+		  prevButton.addEventListener('click', () => {
+			currentPage--;
+			renderPage(currentPage); // Render the previous page
+			createPaginationControls(); // Re-create pagination controls
+		  });
+		  paginationDiv.appendChild(prevButton);
 		}
+
+		// Page number
+		const pageNumber = document.createElement('span');
+		pageNumber.textContent = ` Page ${currentPage} of ${totalPages} `;
+		paginationDiv.appendChild(pageNumber);
+
+		// Next button
+		if (currentPage < totalPages) {
+		  const nextButton = document.createElement('button');
+		  nextButton.textContent = 'Next';
+		  nextButton.addEventListener('click', () => {
+			currentPage++;
+			renderPage(currentPage); // Render the next page
+			createPaginationControls(); // Re-create pagination controls
+		  });
+		  paginationDiv.appendChild(nextButton);
+		}
+
 
 		// Render the first page and pagination controls
 		renderPage(currentPage);
@@ -486,10 +480,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
 
-// Escapes HTML special characters to prevent injection
-function escapeHTML(str) {
-    return str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-}
+	// Escapes HTML special characters to prevent injection
+	function escapeHTML(str) {
+		return str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+	}
 
 
 	// Download CSV file
