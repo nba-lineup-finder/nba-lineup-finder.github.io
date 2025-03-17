@@ -192,7 +192,7 @@ table {
     color: #e0e0e0; /* Light text for readability */
     border-radius: 8px;
     overflow: hidden; /* Ensures border-radius is applied */
-    height: 450px; /* Set fixed height (adjust as needed) */
+    height: 100px; /* Set fixed height (adjust as needed) */
     display: block; /* Necessary for overflow to work */
 }
 
