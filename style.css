@@ -15,7 +15,7 @@ body {
     border: 1px solid #333;
     border-radius: 8px;
     box-shadow: 2px 2px 12px rgba(255, 255, 255, 0.1);
-    background-color: #1e1e1e; /* Dark container background */
+    background-color: #1e1e1e;
 }
 
 .selection-container {
@@ -24,7 +24,6 @@ body {
     gap: 15px;
     margin-top: 15px;
 }
-
 @media (min-width: 600px) {
     .selection-container {
         flex-direction: row;
@@ -32,13 +31,12 @@ body {
         gap: 20px;
     }
 }
-
 .selection-box {
     flex: 1;
     min-width: 0;
 }
 
-/* Styling for the selection dropdowns */
+/* Styling for include + exclude player dropdowns */
 select {
     width: 100%;
     padding: 8px;
@@ -49,7 +47,7 @@ select {
     color: #e0e0e0;
 }
 
-/* Button Styles */
+/* Button style for dark mode */
 button {
     width: 100%;
     padding: 10px;
@@ -62,28 +60,23 @@ button {
     cursor: pointer;
     transition: background 0.3s ease;
 }
-
 button:hover {
-    background-color: #444; /* Slightly lighter grey on hover */
-    border-color: #444; /* Lighter grey border */
+    background-color: #444;
+    border-color: #444; 
 }
-
-/* Disabled state */
 button:disabled {
-    background-color: #666; /* Medium grey for disabled */
-    border-color: #666; /* Same grey for border */
+    background-color: #666;
+    border-color: #666;
     cursor: not-allowed;
     opacity: 0.6;
 }
 
-/* Centering Find Lineups Button */
 #findLineupsBtn {
     display: block;
     margin: 20px auto;
     width: 50%;
 }
 
-/* Minimum Minutes Input */
 #minMinutes {
     width: 5em;
     text-align: center;
@@ -95,8 +88,6 @@ button:disabled {
     color: #e0e0e0;
     margin-top: 10px;
 }
-
-/* Ensures labels align properly */
 #minMinutesLabel {
     font-weight: bold;
     margin-top: 10px;
@@ -108,7 +99,6 @@ button:disabled {
     width: 48%;
     vertical-align: top;
 }
-
 .selected-player {
     display: flex;
     align-items: center;
@@ -138,20 +128,18 @@ button:disabled {
     justify-content: center;
     transition: background 0.2s ease;
 }
-
 .remove-player:hover {
-    background: #8b0000; /* Darker red on hover */
+    background: #8b0000;
 }
 
 /* Tooltip styling */
 .tooltip {
-    position: relative; /* Make sure the tooltip is positioned relative to its parent */
+    position: relative;
 }
-
 .tooltip .tooltip-text {
     visibility: hidden;
     width: 150px;
-    background-color: #333; /* Dark background for tooltip */
+    background-color: #333;
     color: #fff;
     text-align: center;
     padding: 5px;
@@ -162,37 +150,33 @@ button:disabled {
     left: 50%;
     transform: translateX(-50%);
     opacity: 0;
-    transition: opacity 0.3s, visibility 0s 0.3s; /* Added visibility transition */
+    transition: opacity 0.3s, visibility 0s 0.3s;
 }
-
 .tooltip:hover .tooltip-text {
     visibility: visible;
     opacity: 1;
-    transition: opacity 0.3s, visibility 0s 0s; /* Make visibility change immediately */
+    transition: opacity 0.3s, visibility 0s 0s;
 }
 
-/* Container for the links in the top-right corner */
+/* Navbar for links in the top-right corner */
 .links-container {
     position: fixed;  /* Fixed positioning to remain visible on scroll */
     top: 10px;
     right: 20px;
     font-size: 14px;
-    color: #e0e0e0; /* Light text for readability */
+    color: #e0e0e0;
 }
-
-/* Style for individual links */
 .links-container .link {
     color: #a1c4fd; /* Soft blue for links */
     text-decoration: none;
 }
-
 .links-container .link:hover {
     text-decoration: underline;
     color: #68a1f7; /* Lighter blue for hover */
 }
 
 
-/* General table styling */
+/* Lineup results table styling */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -200,8 +184,6 @@ table {
     color: #e0e0e0; /* Light text for readability */
     border-radius: 8px;
 }
-
-/* Table headers */
 th {
     background-color: #161616; /* Slightly darker than table background */
     color: #ffffff;
@@ -213,116 +195,83 @@ th {
     border-spacing: 0;
 	font-size: 16px;
 }
-
-/* Table rows */
 td {
     padding: 14px;
-    border-bottom: 1px solid #333; /* Subtle row dividers */
+    border-bottom: 1px solid #333;
 }
-
-/* Alternate row shading for readability */
-tr:nth-child(even) {
+tr:nth-child(even) { /* Alternate row shading for readability */
     background-color: #252525; /* Slightly lighter than table background */
 }
-
-/* Hover effect for rows */
 tr:hover {
     background-color: #2d2d2d;
 }
-
-/* Style for first and last cell to have rounded corners */
-th:first-child, td:first-child {
+th:first-child, td:first-child { /* Style for first and last cell to have rounded corners */
     border-radius: 8px 0 0 8px;
 }
-
 th:last-child, td:last-child {
     border-radius: 0 8px 8px 0;
 }
-
-
-/* Ensure the container of the table has relative positioning */
-.table-container {
+.table-container { /* Ensure the container of the table has relative positioning */
     position: relative;
     margin-bottom: 50px; /* Add space for pagination controls */
 }
 
-/* Ensures that the pagination container does not stretch too much */
-.pagination {
+/* Pagination settings for lineup table */
+.pagination { /* Ensures that the pagination container does not stretch too much */
     display: flex;
     align-items: center;
     justify-content: flex-end; /* Right-align the pagination controls */
     gap: 10px; /* Gap between pagination items */
     margin-top: 20px;
 }
-
-/* Pagination info (page x of y) */
-.pagination-info {
+.pagination-info { /* Pagination info (page x of y) */
     font-size: 14px;
     color: #e0e0e0; /* Light text */
     margin-right: 15px; /* Add spacing between the info and buttons */
 }
-
-/* General pagination button styles */
-.pagination button {
-    padding: 5px 10px; /* Smaller padding */
-    font-size: 14px; /* Smaller font size */
-    border: 1px solid #555; /* Grey border */
+.pagination button { /* General pagination button styles */
+    padding: 5px 10px;
+    font-size: 14px; 
+    border: 1px solid #555;
     border-radius: 5px;
-    background-color: #333; /* Dark grey background */
-    color: #e0e0e0; /* Light text for readability */
+    background-color: #333;
+    color: #e0e0e0;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin: 0 5px; /* Keep spacing between buttons */
-    width: auto; /* Let the width adjust based on content */
-    height: auto; /* Let height adjust to content */
+    margin: 0 5px;
+    width: auto; 
+    height: auto;
 }
-
-/* Hover effect for buttons */
 .pagination button:hover {
-    background-color: #444; /* Slightly lighter grey on hover */
-    border-color: #444; /* Lighter grey border */
+    background-color: #444;
+    border-color: #444;
 }
-
-/* Disabled state */
 .pagination button:disabled {
-    background-color: #666; /* Medium grey for disabled */
-    border-color: #666; /* Same grey for border */
+    background-color: #666; 
+    border-color: #666
     cursor: not-allowed;
     opacity: 0.6;
 }
-
-/* Styling for the arrow buttons */
 .pagination .arrow {
-    font-size: 18px; /* Bigger arrow size */
+    font-size: 18px;
 }
-
-/* Remove text and keep arrows */
 .pagination button.previous {
-    content: "←"; /* Left arrow */
+    content: "←";
 }
-
 .pagination button.next {
-    content: "→"; /* Right arrow */
+    content: "→";
 }
 
-
-
-/* Soft Green for positive values */
-.positive-nrtg {
+/* Net rating colors */
+.positive-nrtg { /* Soft Green for positive values */
+    color: #2ecc71;
+}
+.negative-nrtg { /* Soft Red for negative values */
+    color: #FF6F61;
+}
+table .positive-nrtg { /* Soft Green for positive values in table */
     color: #2ecc71; /* Soft green */
 }
-
-/* Soft Red for negative values */
-.negative-nrtg {
-    color: #FF6F61; /* Soft red */
-}
-
-/* Soft Green for positive values in table */
-table .positive-nrtg {
-    color: #2ecc71; /* Soft green */
-}
-
-/* Soft Red for negative values in table */
-table .negative-nrtg {
+table .negative-nrtg { /* Soft Red for negative values in table */
     color: #FF6F61; /* Soft red */
 }

@@ -44,6 +44,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     selectMenu.innerHTML = "<option>Loading options...</option>";
 
+	// Get team options for team selection
     try {
         const response = await fetch(teamURL);
         const responseData = await response.json();
@@ -72,6 +73,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         fetchPlayerData(selectMenu.value);
     });
 
+	// Loads all players on a team
     async function fetchPlayerData(teamName) {
         try {
             const response = await fetch(`${teamPlayersURL}?team=${encodeURIComponent(teamName)}`, {
@@ -95,10 +97,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                 throw new Error("Invalid data format: 'players' key missing or not an array");
             }
 
+			// Remove lineups output from previous query 
             populatePlayerOptions(players.players);
-			const existingHeader = outputDiv.querySelector("p"); // Assuming header is inside a <p> tag
-			const existingTable = outputDiv.querySelector("table"); // Assuming table is inside a <table> tag
-			const existingPagination = outputDiv.querySelector(".pagination"); // For pagination controls
+			const existingHeader = outputDiv.querySelector("p");
+			const existingTable = outputDiv.querySelector("table");
+			const existingPagination = outputDiv.querySelector(".pagination");
 			if (existingHeader) existingHeader.remove();
 			if (existingTable) existingTable.remove();
 			if (existingPagination) existingPagination.remove();
@@ -118,6 +121,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 
+	// Shows inclusion and exclusion options
     function populatePlayerOptions(players) {
         includeSelection.innerHTML = "";
         excludeSelection.innerHTML = "";
@@ -146,6 +150,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         excludeSelection.disabled = false;
     }
 
+	// Moves included and excluded players to go to included and excluded selection
     function moveToSelected(player, category) {
         if (document.getElementById(`selected-${CSS.escape(player)}`)) return;
 
@@ -172,6 +177,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         removeFromSelections(player);
     }
 
+	// If player is included or excluded, removes from selection dropdown
     function removeFromSelections(player) {
         [includeSelection, excludeSelection].forEach(select => {
             [...select.options].forEach(option => {
@@ -195,6 +201,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     };
 
+	// If player is no longer included or excluded, they return to selection dropdown options
     function addBackToSelections(player) {
         let option1 = document.createElement("option");
         option1.value = player;
@@ -210,12 +217,14 @@ document.addEventListener("DOMContentLoaded", async function () {
         excludeSelection.appendChild(option2);
     }
 
+	// Gets lineup results when find lineups is selected
 	findLineupsBtn.addEventListener("click", async function () {
 	  if (includedPlayers.size === 0 && excludedPlayers.size === 0) {
 		alert("You must include at least one included or excluded player.");
 		return;
 	  }
-
+		
+	// Input data for AWS API
 	  const requestData = {
 		team: selectMenu.value,
 		included_players: Array.from(includedPlayers),
@@ -223,7 +232,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 		min_minutes: parseInt(minMinutesInput.value, 10) || 0
 	  };
 
-	  // Wrap the requestData inside a "body" field and stringify it
 	  const payload = {
 		body: JSON.stringify(requestData)
 	  };
@@ -231,26 +239,20 @@ document.addEventListener("DOMContentLoaded", async function () {
 	  const loadingIndicator = document.getElementById("loadingIndicator");
 	  const outputDiv = document.getElementById("output");
 	  const downloadBtn = document.getElementById("downloadBtn");
-	  
 	  outputDiv.style.display = "block";
 	  downloadBtn.style.display = "none";
-
-	  // Show loading indicator & disable button
 	  findLineupsBtn.disabled = true;
 	  loadingIndicator.style.display = "block";
 
 	  minMinutesInput.style.display = "inline-block";
 	  minMinutesLabel.style.display = "inline-block";	
 	  findLineupsBtn.style.display = "inline-block";
-	  // if already have table, remove it
-	  const existingHeaders = outputDiv.querySelectorAll("p"); // Get all <p> elements
-	  const existingTable = outputDiv.querySelector("table"); // Get table
-	  const existingPagination = outputDiv.querySelector(".pagination"); // Get pagination
-
-	  // Remove all paragraph elements
+	  
+	  // Removes all output from previous query
+	  const existingHeaders = outputDiv.querySelectorAll("p");
+	  const existingTable = outputDiv.querySelector("table");
+	  const existingPagination = outputDiv.querySelector(".pagination");
 	  existingHeaders.forEach(header => header.remove());
-
-	  // Remove table and pagination if they exist
 	  if (existingTable) existingTable.remove();
 	  if (existingPagination) existingPagination.remove();
 
@@ -308,15 +310,15 @@ document.addEventListener("DOMContentLoaded", async function () {
 			const tr = document.createElement("tr");
 			row.forEach((cell, index) => {
 			  const td = document.createElement("td");
-			  td.textContent = cell; // Using textContent to avoid XSS vulnerabilities
+			  td.textContent = cell;
 
 			  // Check if this is the "NRTG" column and style the cell accordingly
 			  if (index === row.length - 1) {
 				const number = parseFloat(cell);
 				if (number >= 0) {
-				  td.classList.add('positive-nrtg'); // Positive numbers in green
+				  td.classList.add('positive-nrtg');
 				} else {
-				  td.classList.add('negative-nrtg'); // Negative numbers in red
+				  td.classList.add('negative-nrtg');
 				}
 			  }
 
@@ -335,22 +337,20 @@ document.addEventListener("DOMContentLoaded", async function () {
 		  const end = Math.min(start + rowsPerPage - 1, rows.length - 1);
 		  const rowsToDisplay = rows.slice(start, end + 1);
 		  
-		  // Check if a table already exists in outputDiv
 		  let existingTable = outputDiv.querySelector("table");
 		  
 		  if (!existingTable) {
-			// If no existing table, create a new one
 			existingTable = document.createElement("table");
 			outputDiv.insertBefore(existingTable, outputDiv.firstChild);
 		  }
 
 		  // Clear and update the existing table
-		  existingTable.innerHTML = ""; // Clears previous content
+		  existingTable.innerHTML = "";
 		  const newTable = createTable(rowsToDisplay);
 		  
 		  // Move all new table rows to the existing table
-		  existingTable.appendChild(newTable.tHead); // Add header
-		  existingTable.appendChild(newTable.tBodies[0]); // Add body
+		  existingTable.appendChild(newTable.tHead);
+		  existingTable.appendChild(newTable.tBodies[0]);
 		}
 
 		// Function to create pagination controls
@@ -358,7 +358,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		  // Clear any existing pagination controls from the outputDiv
 		  const existingPagination = outputDiv.querySelector(".pagination");
 		  if (existingPagination) {
-			existingPagination.remove(); // Remove the old pagination controls
+			existingPagination.remove();
 		  }
 
 		  const paginationDiv = document.createElement("div");
@@ -372,8 +372,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 			prevButton.textContent = '←';
 			prevButton.addEventListener('click', () => {
 			  currentPage--;
-			  renderPage(currentPage); // Render the previous page
-			  createPaginationControls(); // Re-create pagination controls
+			  renderPage(currentPage);
+			  createPaginationControls();
 			});
 			paginationDiv.appendChild(prevButton);
 		  }
@@ -389,17 +389,15 @@ document.addEventListener("DOMContentLoaded", async function () {
 			nextButton.textContent = '→';
 			nextButton.addEventListener('click', () => {
 			  currentPage++;
-			  renderPage(currentPage); // Render the next page
-			  createPaginationControls(); // Re-create pagination controls
+			  renderPage(currentPage);
+			  createPaginationControls();
 			});
 			paginationDiv.appendChild(nextButton);
 		  }
-		  const table = outputDiv.querySelector("table"); // Get the table element
-		  
+		  const table = outputDiv.querySelector("table");		  
 		  if (table && table.nextElementSibling) {
 			outputDiv.insertBefore(paginationDiv, table.nextElementSibling);
 		  } else {
-			  // If no next sibling, append it at the end
 			  outputDiv.appendChild(paginationDiv);
 		  }
 		}
@@ -421,17 +419,16 @@ document.addEventListener("DOMContentLoaded", async function () {
 		  <br><br>
 		`;
 
-		// Insert the header element at the start of outputDiv
+		// Insert lineup result header at the start of outputDiv
 		outputDiv.insertBefore(headerElement, outputDiv.firstChild);
 
-	  } catch (error) {
+	  } catch (error) { // Lineup query fails and returns results
 		console.error("Error fetching data:", error);
 		const headerElement = document.createElement("p");
 		headerElement.innerHTML = `
 		  <p style="color: red; font-weight: bold;">⚠️ Error: ${error.message}</p>
 		  <p>Please try again or check your selections.</p>
 		`;
-		// Insert the header element at the start of outputDiv
 		outputDiv.insertBefore(headerElement, outputDiv.firstChild);
 
 		// Ensure button and div are still visible
@@ -444,9 +441,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 	  }
 	});
 
-
-
-
+	// Creates table from csv information from Lineup API
 	function generateTableFromCSV(csvText) {
 	  // Split into rows and trim whitespace
 	  const rows = csvText.trim().split("\n").map(row => row.split(",").map(cell => cell.trim()));
@@ -468,7 +463,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 	  headers.forEach(cell => {
 		const th = document.createElement("th");
-		th.textContent = cell; // Using textContent to avoid XSS vulnerabilities
+		th.textContent = cell;
 		headerRow.appendChild(th);
 	  });
 	  thead.appendChild(headerRow);
@@ -480,15 +475,14 @@ document.addEventListener("DOMContentLoaded", async function () {
 		const tr = document.createElement("tr");
 		row.forEach((cell, index) => {
 		  const td = document.createElement("td");
-		  td.textContent = cell; // Using textContent to avoid XSS vulnerabilities
-
+		  td.textContent = cell;
 		  // Check if this is the "NRTG" column and style the cell accordingly
 		  if (index === nrtgColumnIndex) {
 			const number = parseFloat(cell);
 			if (number >= 0) {
-			  td.classList.add('positive-nrtg'); // Positive numbers in green
+			  td.classList.add('positive-nrtg');
 			} else {
-			  td.classList.add('negative-nrtg'); // Negative numbers in red
+			  td.classList.add('negative-nrtg');
 			}
 		  }
 
@@ -497,8 +491,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 		tbody.appendChild(tr);
 	  });
 	  table.appendChild(tbody);
-
-	  // Return the table DOM element
 	  return table;
 	}
 
