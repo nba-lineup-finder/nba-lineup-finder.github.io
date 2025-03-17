@@ -342,10 +342,14 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 		// Function to create pagination controls
 		function createPaginationControls() {
+		  // Clear any existing pagination controls from the outputDiv
+		  const existingPagination = outputDiv.querySelector(".pagination");
+		  if (existingPagination) {
+			existingPagination.remove(); // Remove the old pagination controls
+		  }
+
 		  const paginationDiv = document.createElement("div");
 		  paginationDiv.classList.add("pagination");
-		  // Clear any existing content in the paginationDiv
-		  paginationDiv.innerHTML = ""; // Clear the content
 
 		  const totalPages = Math.ceil((rows.length - 1) / rowsPerPage);
 
